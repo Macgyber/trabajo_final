@@ -2,20 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+ 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
    <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="js/main.js">
    <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Frijole&family=Matemasie&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Rubik+Bubbles&family=Rubik+Puddles&display=swap" rel="stylesheet">
 </head>
 <body>
      <div class="paginaprincipal">
-        <div class="titulo">PARTES<br>QUE<br>CUENTAN</div>
+            <audio src="/trabajo_final/asset/musica/musicadeambientacion3.mp3" id="audi"></audio>
+        <div class="titulo" onclick="audio()">PARTES<br>QUE<br>CUENTAN</div>
     <div id="tutorial">Tutorial</div>
     <div id="empezar">¡Comenzar!</div>
-    <div id="niveles">Niveles</div>
+    <div id="niveles" onclick="nivel()">Niveles</div>
     </div>
-    <script src="js/main.js"></script>
+     <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        var audi = document.getElementById('audi');
+        if (audi) {
+          audi.play().catch(function(){});
+        }
+      });
+    </script>
 </body>
 </html>
