@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- 
+ <link rel="stylesheet" href="facil.css">
   <!-- Puedes agregar un enlace a tu archivo CSS aquí si lo necesitas -->
   
   <title>Nivel Facil</title>
@@ -19,6 +19,34 @@
       z-index: 0;
     }
   </style>
+     
+</head>
+<body>
+  <div id="game-container">
+    <div id="clock-area">
+      🕰️ <!-- Aquí luego irá el reloj SVG o un div animado -->
+    </div>
+    
+    <div id="game-board">
+      <div id="left-panel">
+        <!-- Aquí se inserta el SVG de la fracción -->
+      </div>
+      <div id="right-panel">
+        <div class="option" id="option1">1/9</div>
+        <div class="option" id="option2">2/9</div>
+        <div class="option" id="option3">3/9</div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bg-music" src="ambient.mp3" loop autoplay></audio>
+  <audio id="sound-correct" src="correct.mp3"></audio>
+  <audio id="sound-wrong" src="wrong.mp3"></audio>
+
+  <script src="facil.js"></script>
+</body>
+</html>
+
 </head>
 <body>
 </body>
