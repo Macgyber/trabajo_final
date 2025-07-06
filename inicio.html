@@ -1,23 +1,417 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
- 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-   <link rel="stylesheet" href="css/style.css">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Frijole&family=Matemasie&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Rubik+Bubbles&family=Rubik+Puddles&display=swap" rel="stylesheet">
+
+  <title>Partes Que Cuentan</title>
+  <style>
+
+  * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.paginaprincipal {
+
+  width: 100%;
+  height: 100vh;
+  background:linear-gradient(180deg,#1B3C53,#456882,#D2C1B6,#F9F3EF);
+  background-size: cover;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+
+}
+
+.titulo {
+position: absolute;
+text-align: center;
+font-family: rubik puddles;
+font-size: clamp(60px, 15vw, 220px);
+color: white;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+top: 5vh;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+}
+
+#tutorial {
+  position: absolute;
+  background:transparent;
+  width: 500px;
+  height: 100px;
+  border: solid 2px #ffffff;
+  text-align: center;
+  font-family: rubik bubbles;
+  font-size: 50px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  top: 900px;
+  left: 400px;
+  transition: 1s all;
+  z-index: 3;
+
+  
+
+}
+#tutorial:hover {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  scale: 1.05;
+  font-size:60px ;
+
+}
+
+
+#empezar {
+  position: absolute;
+  background: transparent;
+  width: 500px;
+  height: 100px;
+  border: solid 2px #ffffff;
+  text-align: center;
+  font-family: rubik bubbles;
+  font-size: 50px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  top: 900px;
+  left: 1000px;
+  transition: 1s all;
+}
+#empezar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  scale: 1.05;
+    font-size:60px ;
+}
+#niveles {
+  position: absolute;
+  background: transparent;
+  width: 500px;
+  height: 100px;
+  border: solid 2px #ffffff;
+  text-align: center;
+  font-family: rubik bubbles;
+  font-size: 50px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  top: 900px;
+  left: 1600px;
+  transition: 1s all;
+}
+#niveles:hover {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  scale: 1.05;  
+  font-size:60px ;
+}
+    body {
+      margin: 0;
+      overflow: hidden; /* Evita scroll cuando el overlay aparece */
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none; /* Para que no bloquee el hover del botón */
+      transition: opacity 0.5s ease;
+    }
+
+    #overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 18px;
+      z-index: 11;
+    }
+
+    video {
+      max-width: 90%;
+      max-height: 90%;
+      width: auto;
+      height: auto;
+      box-shadow: 0 0 30px #fff;
+    }
+
+    @media (max-width: 768px) {
+      video {
+        max-width: 95%;
+        max-height: 70%;
+      }
+    }
+
+    .botones {
+      position: absolute;
+      bottom: 10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 90%;
+      max-width: 1200px;
+    }
+
+    .btn {
+      background: transparent;
+      width: clamp(250px, 30vw, 400px);
+      height: clamp(60px, 8vh, 100px);
+      border: solid 2px #ffffff;
+      text-align: center;
+      font-family: rubik bubbles;
+      font-size: clamp(20px, 4vw, 50px);
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      transition: 1s all;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      scale: 1.05;
+      font-size: clamp(24px, 5vw, 60px);
+    }
+
+    .btn-oculto {
+      transition: 1s all;
+    }
+
+    .btn-oculto.escondido {
+      opacity: 0;
+      scale: 0.8;
+      pointer-events: none;
+    }
+
+    .timer {
+      display: none;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    .tutorial-text {
+      display: inline;
+    }
+
+    .btn:hover .texto-tutorial {
+      display: none;
+    }
+
+    .btn:hover .cronometro {
+      display: inline;
+    }
+
+    /* Media queries para responsive */
+    @media (max-width: 768px) {
+      .botones {
+        flex-direction: column;
+        gap: 15px;
+        bottom: 5vh;
+      }
+      
+      .btn {
+        width: 80vw;
+        height: 60px;
+        font-size: 24px;
+      }
+      
+      .titulo {
+        font-size: clamp(40px, 12vw, 80px);
+        top: 2vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .botones {
+        gap: 10px;
+        bottom: 3vh;
+      }
+      
+      .btn {
+        width: 90vw;
+        height: 50px;
+        font-size: 20px;
+      }
+      
+      .titulo {
+        font-size: clamp(30px, 10vw, 60px);
+        top: 1vh;
+      }
+    }
+  </style>
 </head>
 <body>
-     <div class="paginaprincipal">
-            <audio src="/trabajo_final/asset/musica/musicadeambientacion3.mp3" id="audi"></audio>
+<div class="paginaprincipal">
+            <audio src="/asset/music/musicadeambientacion3.mp3" id="audi"></audio>
         <div class="titulo" onclick="audio()">PARTES<br>QUE<br>CUENTAN</div>
-    <div id="tutorial">Tutorial</div>
-    <div id="empezar">¡Comenzar!</div>
-    <button id="niveles">Niveles</button><a href="/trabajo_final/explicacionlvl.html"></a>
-    </div>
-     <script src="js/main.js"></script>
+     
+  <div class="botones">
+    <button id="btn-tutorial" class="btn">
+      <span class="texto-tutorial">Tutorial</span>
+      <span class="cronometro" id="cronometro"></span>
+    </button>
+    <button id="btn-comenzar" class="btn btn-oculto">¡Jugar!</button>
+    <button id="btn-niveles" class="btn btn-oculto">Niveles</button>
+  </div>
+
+  <div id="overlay">
+    <video id="video" src="/asset/movie/canciondeltutorial.mp4" preload="auto" muted></video>
+  </div>
+</div>
+  <script>
+    // variables para los botones
+    const btnTutorial = document.getElementById('btn-tutorial')
+    const btnComenzar = document.getElementById('btn-comenzar')
+    const btnNiveles = document.getElementById('btn-niveles')
+    const overlay = document.getElementById('overlay')
+    const video = document.getElementById('video')
+    const cronometro = document.getElementById('cronometro')
+    let intervalo
+
+    // reproducir musica cuando carga la pagina
+    window.addEventListener('DOMContentLoaded', function() {
+        var musica = document.getElementById('audi')
+        if (musica) {
+          musica.play().catch(function(){})
+        }
+    })
+
+    // cargar video
+    window.addEventListener('load', () => {
+      video.load()
+      cronometro.textContent = ''
+    })
+
+    // activar audio del video
+    function activarAudio() {
+      video.muted = false
+    }
+
+    // eventos para activar audio
+    document.addEventListener('click', activarAudio)
+    document.addEventListener('keydown', activarAudio)
+    document.addEventListener('touchstart', activarAudio)
+    document.addEventListener('mouseenter', activarAudio)
+    document.addEventListener('mouseover', activarAudio)
+    document.addEventListener('mousemove', activarAudio)
+    document.addEventListener('scroll', activarAudio)
+
+    // formatear tiempo mm:ss
+    function formatearTiempo(segundos) {
+      const minutos = Math.floor(segundos / 60)
+      const segundosRestantes = Math.floor(segundos % 60)
+      return `${minutos.toString().padStart(2, '0')}:${segundosRestantes.toString().padStart(2, '0')}`
+    }
+
+    // iniciar cronometro
+    function iniciarCronometro() {
+      const duracion = video.duration
+      let tiempoRestante = duracion
+      
+      cronometro.textContent = formatearTiempo(tiempoRestante)
+      
+      intervalo = setInterval(() => {
+        tiempoRestante -= 1
+        cronometro.textContent = formatearTiempo(tiempoRestante)
+        
+        if (tiempoRestante <= 0) {
+          clearInterval(intervalo)
+          cronometro.textContent = ''
+          setTimeout(() => {
+            overlay.classList.remove('active')
+            btnComenzar.classList.remove('escondido')
+            btnNiveles.classList.remove('escondido')
+            video.currentTime = 0
+          }, 1000)
+        }
+      }, 1000)
+    }
+
+    // parar cronometro
+    function pararCronometro() {
+      if (intervalo) {
+        clearInterval(intervalo)
+        cronometro.textContent = ''
+      }
+    }
+
+    // mostrar video tutorial
+    function mostrarTutorial() {
+      btnComenzar.classList.add('escondido')
+      btnNiveles.classList.add('escondido')
+      
+      const musicaFondo = document.getElementById('audi')
+      if (musicaFondo) {
+        musicaFondo.pause()
+      }
+      
+      video.muted = false
+      video.currentTime = 0
+      video.play().then(() => {
+        overlay.classList.add('active')
+        iniciarCronometro()
+      }).catch(error => {
+        console.log('Error reproduciendo video:', error)
+        video.muted = true
+        video.play().then(() => {
+          overlay.classList.add('active')
+          iniciarCronometro()
+        })
+      })
+    }
+
+    // ocultar video tutorial
+    function ocultarTutorial() {
+      overlay.classList.remove('active')
+      video.pause()
+      pararCronometro()
+      video.currentTime = 0
+      
+      const musicaFondo = document.getElementById('audi')
+      if (musicaFondo) {
+        musicaFondo.play().catch(function(){})
+      }
+      
+      btnComenzar.classList.remove('escondido')
+      btnNiveles.classList.remove('escondido')
+    }
+
+    // eventos de los botones
+    btnTutorial.addEventListener('mouseenter', mostrarTutorial)
+    btnTutorial.addEventListener('mouseleave', ocultarTutorial)
+
+    btnComenzar.addEventListener('click', () => {
+      window.location.href = 'juego.html'
+    })
+
+    btnNiveles.addEventListener('click', () => {
+      window.location.href = 'niveles.html'
+    })
+  </script>
+
 </body>
 </html>

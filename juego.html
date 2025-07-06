@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Rubik+Puddles&display=swap" rel="stylesheet">
+
+  
+  <title>Seleccionar Dificultad</title>
+  
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background: linear-gradient(180deg,#1B3C53,#456882,#D2C1B6,#F9F3EF);
+      background-size: cover;
+      font-family: 'Rubik Bubbles', sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .pagina {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 1vh 2vw;
+      gap: 1vh;
+    }
+
+    .titulo {
+      font-family: 'Rubik Puddles', sans-serif;
+      font-size: 8vw;
+      color: white;
+      text-shadow: 0.2vw 0.2vw 0.4vw rgba(0, 0, 0, 0.5);
+      text-align: center;
+      margin: 2vh 0;
+      background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #0080ff, #8000ff, #ff0080);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: arcoiris 3s ease-in-out infinite;
+    }
+
+    @keyframes arcoiris {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .dificultades {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 6vw;
+      flex-wrap: wrap;
+      margin: 3vh 0;
+    }
+
+    .contenedor-boton {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+    }
+
+    .caja-svg {
+      width: 20vw;
+      height: 20vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+      margin: 0;
+    }
+
+    .svg-hover {
+      width: 15vw;
+      height: 15vw;
+      transition: all 0.3s ease;
+      animation: none;
+    }
+
+    .caja-svg.mostrar .svg-hover {
+      animation: animacionSvg 0.5s ease-in-out;
+    }
+
+    @keyframes animacionSvg {
+      0% {
+        transform: scale(0.5) rotate(-15deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.3) rotate(8deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    .caja-svg.mostrar {
+      opacity: 1;
+    }
+
+    .btn-dificultad {
+      border-radius: 1vw;
+      box-shadow: 0 0.5vw 2vw rgba(0,0,0,0.10);
+      border: 0.3vw solid #fff;
+      font-family: 'Rubik Bubbles', 'Comic Sans MS', cursive;
+      font-size: 3vw;
+      background: rgba(255,255,255,0.15);
+      color: #333;
+      transition: all 0.3s ease;
+      padding: 2vh 4vw;
+      margin: 0 1vw;
+      min-width: 12vw;
+      min-height: 6vh;
+      cursor: pointer;
+      display: inline-block;
+    }
+    
+    /* colores por dificultad */
+    .btn-dificultad#btn-facil { background: rgba(168,224,99,0.13); }
+    .btn-dificultad#btn-intermedio { background: rgba(78,205,196,0.13); }
+    .btn-dificultad#btn-dificil { background: rgba(255,107,107,0.13); }
+    
+    .btn-dificultad:hover, .btn-dificultad:focus {
+      box-shadow: 0 1vw 3vw rgba(0,0,0,0.18);
+      transform: scale(1.08);
+      background: rgba(255,255,255,0.22);
+    }
+
+    .btn-volver {
+      position: absolute;
+      top: 2vh;
+      left: 2vw;
+      padding: 1vh 2vw;
+      background: rgba(255, 255, 255, 0.2);
+      border: 0.2vw solid white;
+      color: white;
+      font-family: 'Rubik Bubbles', sans-serif;
+      font-size: 2vw;
+      border-radius: 0.5vw;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-volver:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    /* El contenido ahora se escala automáticamente con el tamaño de la ventana */
+  </style>
+</head>
+<body>
+  <a href="inicio.html" class="btn-volver" aria-label="Volver a la página de inicio">← Volver</a>
+  
+  <div class="pagina">
+    <h1 class="titulo">Selecciona la Dificultad</h1>
+    
+    <div class="dificultades">
+      <div class="contenedor-boton">
+        <div class="caja-svg" id="caja-svg-facil">
+          <img src="asset/svg/pizza.svg" alt="Imagen fácil" class="svg-hover">
+        </div>
+        <button class="btn-dificultad" id="btn-facil" aria-label="Nivel fácil">FÁCIL</button>
+      </div>
+      <div class="contenedor-boton">
+        <div class="caja-svg" id="caja-svg-intermedio">
+          <img src="asset/svg/pizza.svg" alt="Imagen intermedio" class="svg-hover">
+        </div>
+        <button class="btn-dificultad" id="btn-intermedio" aria-label="Nivel intermedio">INTERMEDIO</button>
+      </div>
+      <div class="contenedor-boton">
+        <div class="caja-svg" id="caja-svg-dificil">
+          <img src="asset/svg/pizza.svg" alt="Imagen difícil" class="svg-hover">
+        </div>
+        <button class="btn-dificultad" id="btn-dificil" aria-label="Nivel difícil">DIFÍCIL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // configuracion de navegacion
+    const configNavegacion = {
+      'btn-facil': '/logica_game/facil.html',
+      'btn-intermedio': '/logica_game/intermedio.html', 
+      'btn-dificil': '/logica_game/dificil.html'
+    }
+
+    // agregar eventos a todos los botones
+    Object.keys(configNavegacion).forEach(id => {
+      const boton = document.getElementById(id)
+      if (boton) {
+        // evento de click para navegacion
+        boton.addEventListener('click', () => {
+          window.location.href = configNavegacion[id]
+        })
+        
+        // evento hover para mostrar SVG
+        boton.addEventListener('mouseenter', () => {
+          const cajaSvg = document.getElementById(`caja-svg-${id.split('-')[1]}`)
+          if (cajaSvg) {
+            cajaSvg.classList.add('mostrar')
+          }
+        })
+        
+        // evento para ocultar SVG
+        boton.addEventListener('mouseleave', () => {
+          const cajaSvg = document.getElementById(`caja-svg-${id.split('-')[1]}`)
+          if (cajaSvg) {
+            cajaSvg.classList.remove('mostrar')
+          }
+        })
+      }
+    })
+  </script>
+</body>
+</html>
