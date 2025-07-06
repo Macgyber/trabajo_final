@@ -30,7 +30,8 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(180deg,#1B3C53,#456882,#D2C1B6,#F9F3EF);
+      background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -115,87 +116,123 @@
       width: 100%;
       height: 100vh;
       z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    /* Contenedor del juego */
-#game-container {
+    #blackboard-container svg {
+      width: 95vw;
+      height: 95vh;
+      object-fit: contain;
+      max-width: 1400px;
+      max-height: 900px;
+    }
+    
+        /* Contenedor del juego */
+    #game-container {
       position: relative;
       z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
       height: 100vh;
       padding: 1vh 2vw;
       gap: 1vh;
+      max-width: 60vw;
+      max-height: 60vh;
     }
     
     /* Puntuación responsive */
     .score-display {
       position: absolute;
-      top: 2vh;
-      right: 2vw;
+      top: 1vh;
+      right: 1vw;
       background: rgba(255,255,255,0.95);
-      padding: 1vh 2vw;
-      border-radius: 1vw;
-      font-size: 2vw;
+      padding: 0.5vh 1vw;
+      border-radius: 0.5vw;
+      font-size: 1.5vw;
       font-weight: bold;
       z-index: 10;
-      box-shadow: 0 0.2vw 1vw rgba(0,0,0,0.2);
+      box-shadow: 0 0.1vw 0.5vw rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5vh;
+      align-items: center;
     }
     
-    /* Reloj responsive */
-#clock-area {
-      font-size: 4vw;
-  color: #333;
+    .ranking-button {
+      padding: 1vh 4vw;
+      font-size: 3vw;
+      background: rgba(255,255,255,0.15);
+      color: #333;
+      border: 0.3vw solid #fff;
+      border-radius: 1vw;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 0.5vw 2vw rgba(0,0,0,0.10);
+    }
+    
+    .ranking-button:hover {
+      box-shadow: 0 1vw 3vw rgba(0,0,0,0.18);
+      transform: scale(1.08);
+      background: rgba(255,255,255,0.22);
+    }
+    
+        /* Reloj responsive */
+    #clock-area {
+      font-size: 3vw;
+      color: #333;
       text-shadow: 0.1vw 0.1vw 0.2vw rgba(0,0,0,0.3);
-      margin: 2vh 0;
-}
+      margin: 1vh 0;
+    }
 
-    /* Tablero de juego responsive */
-#game-board {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-      max-width: 90vw;
-      gap: 2vw;
-}
+        /* Tablero de juego responsive */
+    #game-board {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 70vw;
+      gap: 1vw;
+    }
 
-#left-panel, #right-panel {
-      flex: 1 1 40vw;
-      min-width: 30vw;
+    #left-panel, #right-panel {
+      flex: 1 1 30vw;
+      min-width: 25vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1vh;
+      gap: 0.5vh;
     }
     
     /* SVG responsive */
     #left-panel svg {
-      width: 40vw;
-      max-width: 300px;
+      width: 30vw;
+      max-width: 250px;
       height: auto;
     }
     
-    /* Opciones responsive */
-.option {
-  background: white;
-      border: 0.3vw solid #4CAF50;
-      border-radius: 1vw;
-      padding: 1vh 2vw;
-      margin: 0.5vh 0;
-  text-align: center;
-  cursor: pointer;
+        /* Opciones responsive */
+    .option {
+      background: white;
+      border: 0.2vw solid #4CAF50;
+      border-radius: 0.5vw;
+      padding: 0.5vh 1vw;
+      margin: 0.3vh 0;
+      text-align: center;
+      cursor: pointer;
       transition: all 0.3s ease;
-      font-size: 2.5vw;
+      font-size: 2vw;
       font-weight: bold;
-      box-shadow: 0 0.3vw 1vw rgba(0,0,0,0.2);
+      box-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.2);
       width: 100%;
-      max-width: 30vw;
-}
+      max-width: 25vw;
+    }
 
 .option:hover {
       background: #e8f5e8;
@@ -294,17 +331,49 @@
     }
     
     .ranking-title {
-      font-size: 3vw;
-      margin: 2vh 0;
+      font-size: 5vw;
+      margin: 3vh 0;
       color: #FFD700;
+      text-shadow: 0.2vw 0.2vw 0.4vw rgba(0,0,0,0.8);
+      font-weight: bold;
     }
     
     .ranking-item {
-      font-size: 2vw;
-      margin: 0.5vh 0;
-      padding: 0.5vh 1vw;
-      background: rgba(255,255,255,0.1);
-      border-radius: 0.5vw;
+      font-size: 2.5vw;
+      margin: 0.8vh 0;
+      padding: 1vh 1.5vw;
+      background: rgba(255,255,255,0.15);
+      border-radius: 0.8vw;
+      border: 0.2vw solid rgba(255,255,255,0.3);
+      box-shadow: 0 0.3vw 1vw rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-shadow: 0.1vw 0.1vw 0.2vw rgba(0,0,0,0.3);
+    }
+    
+    .ranking-item:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.02);
+      box-shadow: 0 0.5vw 1.5vw rgba(0,0,0,0.4);
+      border-color: rgba(255,255,255,0.5);
+    }
+    
+    .ranking-item:nth-child(1) {
+      background: linear-gradient(45deg, rgba(255,215,0,0.25), rgba(255,255,255,0.2));
+      border-color: #FFD700;
+      font-size: 2.8vw;
+    }
+    
+    .ranking-item:nth-child(2) {
+      background: linear-gradient(45deg, rgba(192,192,192,0.25), rgba(255,255,255,0.2));
+      border-color: #C0C0C0;
+      font-size: 2.7vw;
+    }
+    
+    .ranking-item:nth-child(3) {
+      background: linear-gradient(45deg, rgba(205,127,50,0.25), rgba(255,255,255,0.2));
+      border-color: #CD7F32;
+      font-size: 2.6vw;
     }
     
     /* El contenido ahora se escala automáticamente con el tamaño de la ventana */
@@ -325,43 +394,89 @@
              pattern="[A-Za-z0-9\s]+"
              title="Solo letras, números y espacios">
       <button id="start-game" class="start-button" disabled>¡Comenzar!</button>
+      <button id="ranking-btn" class="ranking-button">📊 Ver Ranking</button>
     </div>
   </div>
 
-  <!-- Tablero escolar -->
+  <!-- Tablero moderno -->
   <div id="blackboard-container">
-    <svg width="100%" height="100%" viewBox="0 0 1200 800" style="position: absolute; top: 0; left: 0; z-index: -1;">
-      <!-- Tablero escolar grande -->
-      <rect x="50" y="50" width="1100" height="700" rx="20" ry="20" fill="#2d4a3e" stroke="#1a2f26" stroke-width="5"/>
-      
-      <!-- Marco del tablero -->
-      <rect x="30" y="30" width="1140" height="740" rx="30" ry="30" fill="#8b4513" stroke="#654321" stroke-width="4"/>
-      
-      <!-- Líneas del tablero más espaciadas -->
-      <line x1="100" y1="150" x2="1100" y2="150" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      <line x1="100" y1="250" x2="1100" y2="250" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      <line x1="100" y1="350" x2="1100" y2="350" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      <line x1="100" y1="450" x2="1100" y2="450" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      <line x1="100" y1="550" x2="1100" y2="550" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      <line x1="100" y1="650" x2="1100" y2="650" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
-      
-      <!-- Tiza decorativa más grande -->
-      <rect x="1150" y="80" width="20" height="60" fill="#f5f5dc" stroke="#d2b48c" stroke-width="2"/>
-      <rect x="1160" y="90" width="8" height="40" fill="#ffffff"/>
-      
-      <!-- Borrador más grande -->
-      <rect x="1150" y="160" width="30" height="20" fill="#8b7355" stroke="#654321" stroke-width="2"/>
-      <rect x="1155" y="165" width="20" height="10" fill="#d2b48c"/>
-      
-      <!-- Elementos decorativos del aula más grandes -->
-      <circle cx="80" cy="80" r="8" fill="#ffd700" opacity="0.7"/>
-      <circle cx="1120" cy="80" r="8" fill="#ffd700" opacity="0.7"/>
-      <circle cx="80" cy="720" r="8" fill="#ffd700" opacity="0.7"/>
-      <circle cx="1120" cy="720" r="8" fill="#ffd700" opacity="0.7"/>
-      
-      <!-- Clavos del tablero -->
-      <circle cx="80" cy="400" r="5" fill="#8b4513" stroke="#654321" stroke-width="1"/>
-      <circle cx="1120" cy="400" r="5" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+    <svg viewBox="0 0 500 500" style="width: 100%; height: 100%; object-fit: contain;">
+      <defs>
+        <filter id="inner-shadow-filter-1" bx:preset="inner-shadow 1 0 0 10 0.5 rgba(0,0,0,0.7)" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1"/>
+          </feComponentTransfer>
+          <feFlood flood-color="rgba(0,0,0,0.7)" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-0" bx:preset="inner-shadow 1 0 0 10 0.5 rgba(0,0,0,0.7)" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1"/>
+          </feComponentTransfer>
+          <feFlood flood-color="rgba(0,0,0,0.7)" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <radialGradient gradientUnits="userSpaceOnUse" cx="242.912" cy="186.989" r="211.122" id="gradient-0">
+          <stop offset="0" style="stop-color: rgb(53, 118, 70);"/>
+          <stop offset="1" style="stop-color: rgb(0% 10.127% 0%);"/>
+        </radialGradient>
+        <filter id="morphology-filter-0" bx:preset="morphology 1 dilate 4" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feMorphology operator="dilate" radius="4"/>
+        </filter>
+        <filter id="inner-shadow-filter-4" bx:preset="inner-shadow 1 0 0 10 0.5 #ffc082" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#ffc082" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="sharpen-filter-0" bx:preset="sharpen 1 0.4" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feConvolveMatrix order="3" kernelMatrix="-4,-4,-4,-4,33,-4,-4,-4,-4"/>
+        </filter>
+        <filter id="inner-shadow-filter-2" bx:preset="inner-shadow 1 0 0 3 0.5 rgba(0,0,0,0.7)" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="3"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1"/>
+          </feComponentTransfer>
+          <feFlood flood-color="rgba(0,0,0,0.7)" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="sharpen-filter-1" bx:preset="sharpen 1 0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feConvolveMatrix order="3" kernelMatrix="0,0,0,0,1,0,0,0,0"/>
+        </filter>
+        <filter id="inner-shadow-filter-3" bx:preset="inner-shadow 1 0 0 10 0.5 rgba(0,0,0,0.7)" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1"/>
+          </feComponentTransfer>
+          <feFlood flood-color="rgba(0,0,0,0.7)" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+      </defs>
+      <path style="fill: rgb(106, 46, 27); stroke: rgb(106, 46, 27); filter: url(&quot;#inner-shadow-filter-1&quot;);" d="M 17.441 82.386 L 7.734 90.855 L 7.728 298.338 L 456.44 298.498 L 469.424 291.817 L 469.699 82.928 L 17.441 82.386 Z" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
+      <rect x="16.926" y="82.746" width="452.201" height="209.272" style="stroke-width: 1; fill: rgb(212, 107, 56); stroke: rgb(212, 107, 56); filter: url(&quot;#inner-shadow-filter-0&quot;);" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
+      <rect x="31.79" y="91.737" width="422.245" height="190.503" style="stroke: rgb(4, 34, 13); fill: url(&quot;#gradient-0&quot;); filter: url(&quot;#morphology-filter-0&quot;);" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
+      <rect x="42.718" y="268.953" width="72.36" height="7.014" style="stroke: rgb(0, 0, 0); fill: rgb(243, 237, 107); filter: url(&quot;#inner-shadow-filter-4&quot;) url(&quot;#sharpen-filter-0&quot;);" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
+      <rect x="25.07" y="276.014" width="436.076" height="10.371" style="fill: rgb(159, 66, 34); stroke: rgb(159, 66, 34); filter: url(&quot;#inner-shadow-filter-2&quot;) url(&quot;#sharpen-filter-1&quot;);" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
+      <rect x="38.381" y="255.996" width="81.439" height="14.021" style="fill: rgb(120, 52, 29); stroke: rgb(120, 52, 29); filter: url(&quot;#inner-shadow-filter-3&quot;);" transform="matrix(1, 0, 0, 1, 0, 7.105427357601002e-15)"/>
     </svg>
   </div>
 
@@ -481,12 +596,20 @@
     document.addEventListener('DOMContentLoaded', () => {
       cargarRanking()
       prepararPantallaBienvenida()
+      const btnRanking = document.getElementById('ranking-btn')
+      if (btnRanking) {
+        btnRanking.addEventListener('click', () => {
+          // Mostramos la pantalla de ranking aunque no hayas jugado
+          mostrarPantallaFinal(puntuacion, Math.floor((Date.now() - tiempoInicio) / 1000))
+        })
+      }
     })
 
     // Preparar la pantalla donde el jugador pone su nombre
     function prepararPantallaBienvenida() {
       const entradaNombre = document.getElementById('player-name')
       const botonComenzar = document.getElementById('start-game')
+      const botonRanking = document.getElementById('ranking-btn')
       
       entradaNombre.addEventListener('input', (e) => {
         const nombre = e.target.value.trim()
@@ -498,6 +621,12 @@
       })
       
       botonComenzar.addEventListener('click', comenzarJuego)
+      
+      // BOTÓN DE RANKING (puedes quitar este bloque si no lo necesitas)
+      botonRanking.addEventListener('click', () => {
+        // Mostramos la pantalla de ranking desde la bienvenida
+        mostrarPantallaRanking()
+      })
     }
 
     // Empezar el juego
@@ -639,7 +768,7 @@
           <div class="end-game-time">Tiempo: ${tiempoTexto}</div>
           
           <div class="ranking-container">
-            <h2 class="ranking-title">🏆 Mejores Jugadores</h2>
+            <h2 class="ranking-title">🏆 TABLERO DE LA FAMA</h2>
             ${generarHTMLRanking()}
           </div>
           
@@ -649,25 +778,38 @@
       `
     }
 
-    // Crear la lista de mejores jugadores
+        // Crear la lista de mejores jugadores del nivel FÁCIL
     function generarHTMLRanking() {
-      return listaMejores.slice(0, 5).map((jugador, indice) => {
-        const minutos = Math.floor(jugador.time / 60)
-        const segundos = jugador.time % 60
-        const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
-        return `
-          <div class="ranking-item">
-            ${indice + 1}. ${jugador.name} - ${jugador.score} puntos (${tiempoTexto})
-          </div>
-        `
-      }).join('')
+      // Solo obtener ranking del nivel FÁCIL
+      const rankingFacil = JSON.parse(localStorage.getItem('facilRanking') || '[]')
+      
+      let html = ''
+      
+      if (rankingFacil.length > 0) {
+        html += rankingFacil.slice(0, 5).map((jugador, indice) => {
+          const minutos = Math.floor(jugador.time / 60)
+          const segundos = jugador.time % 60
+          const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
+          const medalla = indice === 0 ? '🥇' : indice === 1 ? '🥈' : indice === 2 ? '🥉' : '🏅'
+          const posicion = indice === 0 ? '1er Lugar' : indice === 1 ? '2do Lugar' : indice === 2 ? '3er Lugar' : `${indice + 1}° Lugar`
+          return `
+            <div class="ranking-item" style="border-left: 0.5vw solid #4CAF50;">
+              ${medalla} ${posicion} - <strong>${jugador.name}</strong> - ${jugador.score} puntos (${tiempoTexto})
+            </div>
+          `
+        }).join('')
+      } else {
+        html += '<div class="ranking-item" style="text-align: center; font-size: 2.5vw;">🌟 ¡Sé el primero en aparecer aquí! 🌟</div>'
+      }
+      
+      return html
     }
 
     // Guardar el resultado en la memoria del navegador
     function guardarResultado(nombre, puntuacion, tiempo) {
       const resultado = { name: nombre, score: puntuacion, time: tiempo, date: new Date().toISOString() }
       
-      // Obtener la lista de mejores jugadores que ya existe
+      // Obtener la lista de mejores jugadores del nivel FÁCIL
       const rankingExistente = JSON.parse(localStorage.getItem('facilRanking') || '[]')
       
       // Agregar el nuevo resultado
@@ -679,7 +821,7 @@
         return a.time - b.time
       })
       
-      // Mantener solo los 10 mejores
+      // Mantener solo los 10 mejores del nivel FÁCIL
       const mejores10 = rankingExistente.slice(0, 10)
       
       // Guardar en la memoria
@@ -687,10 +829,64 @@
       listaMejores = mejores10
     }
 
-    // Cargar la lista de mejores jugadores
+    // Cargar la lista de mejores jugadores del nivel FÁCIL
     function cargarRanking() {
       listaMejores = JSON.parse(localStorage.getItem('facilRanking') || '[]')
     }
+
+    // Mostrar solo la pantalla de ranking (sin jugar)
+    function mostrarPantallaRanking() {
+      // Esconder la pantalla de bienvenida
+      document.getElementById('welcome-screen').style.display = 'none'
+      
+      // Crear pantalla de ranking
+      const rankingScreen = document.createElement('div')
+      rankingScreen.className = 'end-game-screen'
+      rankingScreen.innerHTML = `
+        <h1 class="end-game-title">🏆 TABLERO DE LA FAMA</h1>
+        
+        <div class="ranking-container">
+          ${generarHTMLRanking()}
+        </div>
+        
+        <button onclick="location.reload()" class="end-game-button">Volver</button>
+      `
+      document.body.appendChild(rankingScreen)
+    }
+
+    // FUNCIÓN PARA AGREGAR CONTENIDO AL LOCALSTORAGE (puedes quitar este bloque)
+    function agregarDatosPrueba() {
+      // Datos de ejemplo para el nivel FÁCIL
+      const datosFacil = [
+        { name: 'Ana', score: 30, time: 85, date: new Date().toISOString() },
+        { name: 'Carlos', score: 20, time: 120, date: new Date().toISOString() },
+        { name: 'María', score: 10, time: 180, date: new Date().toISOString() }
+      ]
+      
+      // Datos de ejemplo para el nivel INTERMEDIO
+      const datosIntermedio = [
+        { name: 'Pedro', score: 25, time: 150, date: new Date().toISOString() },
+        { name: 'Laura', score: 15, time: 195, date: new Date().toISOString() },
+        { name: 'Juan', score: 5, time: 260, date: new Date().toISOString() }
+      ]
+      
+      // Datos de ejemplo para el nivel DIFÍCIL
+      const datosDificil = [
+        { name: 'Sofía', score: 20, time: 225, date: new Date().toISOString() },
+        { name: 'Diego', score: 10, time: 270, date: new Date().toISOString() },
+        { name: 'Carmen', score: 5, time: 315, date: new Date().toISOString() }
+      ]
+      
+      // Guardar en localStorage
+      localStorage.setItem('facilRanking', JSON.stringify(datosFacil))
+      localStorage.setItem('intermedioRanking', JSON.stringify(datosIntermedio))
+      localStorage.setItem('dificilRanking', JSON.stringify(datosDificil))
+      
+      console.log('Datos de prueba agregados al localStorage')
+    }
+
+    // Para agregar datos de prueba, ejecuta esto en la consola del navegador:
+    // agregarDatosPrueba()
   </script>
 </body>
 </html>
