@@ -8,6 +8,11 @@
   
   <title>Nivel Facil</title>
   <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
     body {
       margin: 0;
       padding: 0;
@@ -17,7 +22,64 @@
       background-repeat: no-repeat; /* Que no se repita */
       height: 100vh; /* Ocupe el 100% de la altura de la pantalla */
       z-index: 0;
+      font-family: sans-serif;
+  background: #f0f0f0;
     }
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#clock-area {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+#game-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+#left-panel, #right-panel {
+  flex: 1 1 300px;
+  min-width: 250px;
+  padding: 10px;
+}
+
+.option {
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.option:hover {
+  background: #e0f7fa;
+  border-color: #00bcd4;
+}
+
+
+.pulse {
+  animation: pulseAnim 1s;
+}
+
+@keyframes pulseAnim {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
   </style>
      
 </head>
@@ -43,7 +105,45 @@
   <audio id="sound-correct" src="correct.mp3"></audio>
   <audio id="sound-wrong" src="wrong.mp3"></audio>
 
-  <script src="facil.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const leftPanel = document.getElementById('left-panel');
+  // SVG de ejemplo: círculo partido en 9 con 3 partes pintadas
+  leftPanel.innerHTML = `
+    <svg width="200" height="200" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="90" fill="#eee" stroke="black" stroke-width="2"/>
+      <path d="M100,100 L100,10 A90,90 0 0,1 178,55 Z" fill="#4caf50"/>
+      <path d="M100,100 L178,55 A90,90 0 0,1 190,100 Z" fill="#4caf50"/>
+      <path d="M100,100 L190,100 A90,90 0 0,1 178,145 Z" fill="#4caf50"/>
+    </svg>
+  `;
+});
+
+
+const correctOptionId = 'option3'; // ejemplo: 3/9 es correcto
+
+document.querySelectorAll('.option').forEach(option => {
+  option.addEventListener('click', e => {
+    const id = e.currentTarget.id;
+    if(id === correctOptionId){
+      document.getElementById('sound-correct').play();
+      animateClock('green');
+    } else {
+      document.getElementById('sound-wrong').play();
+      animateClock('red');
+    }
+    // Aquí luego pasamos a la siguiente pregunta
+  });
+});
+
+function animateClock(color) {
+  const clock = document.getElementById('clock-area');
+  clock.style.color = color;
+  clock.classList.add('pulse');
+  setTimeout(() => clock.classList.remove('pulse'), 1000);
+}
+
+  </script>
 </body>
 </html>
 
