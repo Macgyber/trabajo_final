@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nivel Fácil - Juego de Fracciones</title>
+  <title>Partes que cuenta - Nivel Fácil</title>
+  <link rel="icon" type="image/svg+xml" href="../asset/svg/pizza.svg">
   <style>
     * {
   margin: 0;
@@ -266,6 +267,31 @@
   100% { transform: scale(1); }
 }
 
+    /* Animación de apuntado para las manos */
+    .pointing-hand {
+      animation: pointingAnim 0.5s ease-in-out infinite;
+    }
+
+    @keyframes pointingAnim {
+      0% { transform: translateX(0) scale(1); }
+      25% { transform: translateX(1vw) scale(1.1); }
+      50% { transform: translateX(2vw) scale(1.2); }
+      75% { transform: translateX(1vw) scale(1.1); }
+      100% { transform: translateX(0) scale(1); }
+    }
+
+    .pointing-hand-right {
+      animation: pointingAnimRight 0.5s ease-in-out infinite;
+    }
+
+    @keyframes pointingAnimRight {
+      0% { transform: translateX(0) scale(1); }
+      25% { transform: translateX(-1vw) scale(1.1); }
+      50% { transform: translateX(-2vw) scale(1.2); }
+      75% { transform: translateX(-1vw) scale(1.1); }
+      100% { transform: translateX(0) scale(1); }
+    }
+
     /* Pantalla de fin de juego */
     .end-game-screen {
       position: fixed;
@@ -323,11 +349,18 @@
     /* Ranking */
     .ranking-container {
       margin: 3vh 0;
-      padding: 1vh 2vw;
+      padding: 4vh 5vw;
       background: rgba(255,255,255,0.1);
-      border-radius: 1vw;
-      max-height: 30vh;
-      overflow-y: auto;
+      border-radius: 2vw;
+      max-width: 80vw;
+      min-width: 60vw;
+      min-height: 40vh;
+      max-height: 60vh;
+      overflow-y: visible;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
     
     .ranking-title {
@@ -339,16 +372,77 @@
     }
     
     .ranking-item {
+      display: flex;
+      align-items: center;
+      gap: 2vw;
       font-size: 2.5vw;
       margin: 0.8vh 0;
-      padding: 1vh 1.5vw;
+      padding: 1.2vh 1.5vw;
       background: rgba(255,255,255,0.15);
       border-radius: 0.8vw;
       border: 0.2vw solid rgba(255,255,255,0.3);
       box-shadow: 0 0.3vw 1vw rgba(0,0,0,0.3);
       transition: all 0.3s ease;
-      font-weight: bold;
+      font-weight: normal;
       text-shadow: 0.1vw 0.1vw 0.2vw rgba(0,0,0,0.3);
+      justify-content: flex-start;
+      min-height: unset;
+      height: auto;
+    }
+    .ranking-item.ganador {
+      background: linear-gradient(90deg, rgba(255,255,200,0.25), rgba(255,255,255,0.18));
+      border-width: 0.3vw;
+      box-shadow: 0 0.5vw 2vw rgba(255,215,0,0.18);
+    }
+    .ranking-medal {
+      font-size: 2.5vw;
+      width: 3vw;
+      min-width: 3vw;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ranking-name {
+      font-size: 2.7vw;
+      font-weight: bold;
+      color: #1B3C53;
+      margin-right: 2vw;
+    }
+    .ranking-item.ganador .ranking-name {
+      font-size: 3vw;
+      color: #C59D00;
+    }
+    .ranking-points {
+      font-size: 2.2vw;
+      color: #2196F3;
+      font-weight: bold;
+      margin-right: 2vw;
+    }
+    .ranking-item.ganador .ranking-points {
+      font-size: 2.5vw;
+      color: #C59D00;
+    }
+    .ranking-tiempo-obtenido {
+      font-size: 2.5vw;
+      color: #B80040;
+      font-weight: bold;
+      margin-left: auto;
+      margin-right: 1vw;
+      letter-spacing: 0.1vw;
+      text-align: right;
+      min-width: 8vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .ranking-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      justify-content: flex-start;
     }
     
     .ranking-item:hover {
@@ -386,15 +480,20 @@
     <p class="welcome-subtitle">¡Aprende fracciones de manera divertida!</p>
     
     <div class="name-input-container">
-      <input type="text" 
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1vw;">
+        <span style="font-size: 8vw;" class="pointing-hand">👉</span>
+        <input type="text" 
              id="player-name" 
              class="name-input" 
-             placeholder="Ingresa tu nombre"
+             placeholder="Ingresa tu nick (¡usa siempre el mismo!)"
              maxlength="20"
              pattern="[A-Za-z0-9\s]+"
              title="Solo letras, números y espacios">
+        <span style="font-size: 8vw;" class="pointing-hand-right">👈</span>
+      </div>
       <button id="start-game" class="start-button" disabled>¡Comenzar!</button>
       <button id="ranking-btn" class="ranking-button">📊 Ver Ranking</button>
+      <div id="nick-hint" style="font-size:2vw; color:#B80040; margin-top:1vh;">Usa siempre el mismo nick para mejorar tu ranking y escalar en los niveles</div>
     </div>
   </div>
 
@@ -487,7 +586,7 @@
     </div>
     
     <div id="clock-area">
-      ⏰ <span id="timer">00:00</span>
+      ⏰ <span id="timer">00:00:00</span>
     </div>
     
     <div id="game-board">
@@ -641,7 +740,7 @@
       // Empezar a contar el tiempo
       tiempoInicio = Date.now()
       actualizarReloj()
-      relojJuego = setInterval(actualizarReloj, 1000)
+      relojJuego = setInterval(actualizarReloj, 10)
       
       // Mostrar la primera pregunta
       cargarPregunta()
@@ -650,11 +749,12 @@
 
     // Actualizar el reloj que muestra el tiempo
     function actualizarReloj() {
-      const tiempoTranscurrido = Math.floor((Date.now() - tiempoInicio) / 1000)
-      const minutos = Math.floor(tiempoTranscurrido / 60)
-      const segundos = tiempoTranscurrido % 60
+      const tiempoTranscurrido = Date.now() - tiempoInicio
+      const minutos = Math.floor(tiempoTranscurrido / 60000)
+      const segundos = Math.floor((tiempoTranscurrido % 60000) / 1000)
+      const milesimas = Math.floor((tiempoTranscurrido % 1000) / 10)
       document.getElementById('timer').textContent = 
-        `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
+        `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}:${milesimas.toString().padStart(2, '0')}`
     }
 
     // Mostrar una pregunta
@@ -745,7 +845,7 @@
     // Terminar el juego
     function terminarJuego() {
       clearInterval(relojJuego)
-      const tiempoJuego = Math.floor((Date.now() - tiempoInicio) / 1000)
+      const tiempoJuego = Date.now() - tiempoInicio
       
       // Guardar el resultado
       guardarResultado(nombreJugador, puntuacion, tiempoJuego)
@@ -757,9 +857,10 @@
     // Mostrar la pantalla cuando termina el juego
     function mostrarPantallaFinal(puntuacion, tiempo) {
       const contenedorJuego = document.getElementById('game-container')
-      const minutos = Math.floor(tiempo / 60)
-      const segundos = tiempo % 60
-      const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
+      const minutos = Math.floor(tiempo / 60000)
+      const segundos = Math.floor((tiempo % 60000) / 1000)
+      const milesimas = Math.floor((tiempo % 1000) / 10)
+      const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}:${milesimas.toString().padStart(2, '0')}`
       
       contenedorJuego.innerHTML = `
         <div class="end-game-screen">
@@ -780,51 +881,56 @@
 
         // Crear la lista de mejores jugadores del nivel FÁCIL
     function generarHTMLRanking() {
-      // Solo obtener ranking del nivel FÁCIL
       const rankingFacil = JSON.parse(localStorage.getItem('facilRanking') || '[]')
-      
       let html = ''
-      
       if (rankingFacil.length > 0) {
         html += rankingFacil.slice(0, 5).map((jugador, indice) => {
-          const minutos = Math.floor(jugador.time / 60)
-          const segundos = jugador.time % 60
-          const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
-          const medalla = indice === 0 ? '🥇' : indice === 1 ? '🥈' : indice === 2 ? '🥉' : '🏅'
-          const posicion = indice === 0 ? '1er Lugar' : indice === 1 ? '2do Lugar' : indice === 2 ? '3er Lugar' : `${indice + 1}° Lugar`
+          const minutos = Math.floor(jugador.time / 60000)
+          const segundos = Math.floor((jugador.time % 60000) / 1000)
+          const milesimas = Math.floor((jugador.time % 1000) / 10)
+          const tiempoTexto = `(${minutos}:${segundos.toString().padStart(2, '0')}:${milesimas.toString().padStart(2, '0')})`
+          let medalla = ''
+          if (indice === 0) medalla = '🥇'
+          else if (indice === 1) medalla = '🥈'
+          else if (indice === 2) medalla = '🥉'
+          const ganadorClass = indice < 3 ? 'ganador' : ''
           return `
-            <div class="ranking-item" style="border-left: 0.5vw solid #4CAF50;">
-              ${medalla} ${posicion} - <strong>${jugador.name}</strong> - ${jugador.score} puntos (${tiempoTexto})
+            <div class="ranking-item ${ganadorClass}">
+              <span class="ranking-medal">${medalla}</span>
+              <span class="ranking-name">${jugador.name}</span>
+              <span class="ranking-points">${jugador.score} puntos</span>
+              <span class="ranking-tiempo-obtenido">${tiempoTexto}</span>
             </div>
           `
         }).join('')
       } else {
         html += '<div class="ranking-item" style="text-align: center; font-size: 2.5vw;">🌟 ¡Sé el primero en aparecer aquí! 🌟</div>'
       }
-      
       return html
     }
 
     // Guardar el resultado en la memoria del navegador
     function guardarResultado(nombre, puntuacion, tiempo) {
       const resultado = { name: nombre, score: puntuacion, time: tiempo, date: new Date().toISOString() }
-      
-      // Obtener la lista de mejores jugadores del nivel FÁCIL
       const rankingExistente = JSON.parse(localStorage.getItem('facilRanking') || '[]')
-      
-      // Agregar el nuevo resultado
-      rankingExistente.push(resultado)
-      
-      // Ordenar por puntuación (más puntos primero) y tiempo (más rápido primero)
+      // Buscar si el nick ya existe
+      const idx = rankingExistente.findIndex(j => j.name.toLowerCase() === nombre.toLowerCase())
+      if (idx !== -1) {
+        // Si el nuevo puntaje es mejor, o el tiempo es menor (en empate de puntos), actualiza
+        if (
+          puntuacion > rankingExistente[idx].score ||
+          (puntuacion === rankingExistente[idx].score && tiempo < rankingExistente[idx].time)
+        ) {
+          rankingExistente[idx] = resultado
+        }
+      } else {
+        rankingExistente.push(resultado)
+      }
       rankingExistente.sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score
         return a.time - b.time
       })
-      
-      // Mantener solo los 10 mejores del nivel FÁCIL
       const mejores10 = rankingExistente.slice(0, 10)
-      
-      // Guardar en la memoria
       localStorage.setItem('facilRanking', JSON.stringify(mejores10))
       listaMejores = mejores10
     }
