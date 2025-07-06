@@ -3,73 +3,222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <link rel="stylesheet" href="facil.css">
-  <!-- Puedes agregar un enlace a tu archivo CSS aquí si lo necesitas -->
-  
-  <title>Nivel Facil</title>
+  <title>Nivel Fácil - Juego de Fracciones</title>
   <style>
     * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+    
     body {
-      margin: 0;
-      padding: 0;
-      background-image: url('/asset/image/nivel\ facil\ interfaz.jpg'); /* Cambia por la ruta de tu imagen */
-      background-size: cover; /* Hace que cubra toda la pantalla */
-      background-position: center; /* Centra la imagen */
-      background-repeat: no-repeat; /* Que no se repita */
-      height: 100vh; /* Ocupe el 100% de la altura de la pantalla */
-      z-index: 0;
-      font-family: sans-serif;
-  background: #f0f0f0;
+      width: 100%;
+      min-height: 100vh;
+      background-image: url('../asset/image/nivel facil interfaz.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
+    
+    /* Pantalla inicial */
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1vh 2vw;
+      gap: 1vh;
+    }
+    
+    .welcome-title {
+      font-size: 8vw;
+      color: white;
+      text-shadow: 0.2vw 0.2vw 0.4vw rgba(0, 0, 0, 0.5);
+      text-align: center;
+      margin: 2vh 0;
+      font-weight: bold;
+    }
+    
+    .welcome-subtitle {
+      font-size: 3vw;
+      color: #f0f0f0;
+      text-align: center;
+      margin: 3vh 0;
+    }
+    
+    .name-input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vh;
+      margin: 3vh 0;
+    }
+    
+    .name-input {
+      width: 60vw;
+      max-width: 400px;
+      padding: 1vh 2vw;
+      font-size: 3vw;
+      border: 0.3vw solid #fff;
+      border-radius: 1vw;
+      background: rgba(255, 255, 255, 0.9);
+      text-align: center;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .name-input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 1vw rgba(76, 175, 80, 0.5);
+      transform: scale(1.02);
+    }
+    
+    .start-button {
+      padding: 1vh 4vw;
+      font-size: 3vw;
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      border-radius: 1vw;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 0.5vw 2vw rgba(0,0,0,0.2);
+    }
+    
+    .start-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 1vw 3vw rgba(0,0,0,0.3);
+    }
+    
+    .start-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    /* Tablero responsive */
+    #blackboard-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+    }
+    
+    /* Contenedor del juego */
 #game-container {
+      position: relative;
+      z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-}
-
+      justify-content: center;
+      height: 100vh;
+      padding: 1vh 2vw;
+      gap: 1vh;
+    }
+    
+    /* Puntuación responsive */
+    .score-display {
+      position: absolute;
+      top: 2vh;
+      right: 2vw;
+      background: rgba(255,255,255,0.95);
+      padding: 1vh 2vw;
+      border-radius: 1vw;
+      font-size: 2vw;
+      font-weight: bold;
+      z-index: 10;
+      box-shadow: 0 0.2vw 1vw rgba(0,0,0,0.2);
+    }
+    
+    /* Reloj responsive */
 #clock-area {
-  margin-bottom: 20px;
-  font-size: 2rem;
+      font-size: 4vw;
   color: #333;
+      text-shadow: 0.1vw 0.1vw 0.2vw rgba(0,0,0,0.3);
+      margin: 2vh 0;
 }
 
+    /* Tablero de juego responsive */
 #game-board {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 800px;
+      max-width: 90vw;
+      gap: 2vw;
 }
 
 #left-panel, #right-panel {
-  flex: 1 1 300px;
-  min-width: 250px;
-  padding: 10px;
-}
-
+      flex: 1 1 40vw;
+      min-width: 30vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1vh;
+    }
+    
+    /* SVG responsive */
+    #left-panel svg {
+      width: 40vw;
+      max-width: 300px;
+      height: auto;
+    }
+    
+    /* Opciones responsive */
 .option {
   background: white;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 10px 0;
+      border: 0.3vw solid #4CAF50;
+      border-radius: 1vw;
+      padding: 1vh 2vw;
+      margin: 0.5vh 0;
   text-align: center;
   cursor: pointer;
-  transition: background 0.3s, border-color 0.3s;
+      transition: all 0.3s ease;
+      font-size: 2.5vw;
+      font-weight: bold;
+      box-shadow: 0 0.3vw 1vw rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 30vw;
 }
 
 .option:hover {
-  background: #e0f7fa;
-  border-color: #00bcd4;
-}
-
-
+      background: #e8f5e8;
+      border-color: #45a049;
+      transform: scale(1.08);
+      box-shadow: 0 1vw 3vw rgba(0,0,0,0.18);
+    }
+    
+    .option.correct {
+      background: #4CAF50;
+      color: white;
+      border-color: #45a049;
+      transform: scale(1.05);
+    }
+    
+    .option.wrong {
+      background: #f44336;
+      color: white;
+      border-color: #d32f2f;
+      transform: scale(0.95);
+    }
+    
+    /* Animaciones */
 .pulse {
   animation: pulseAnim 1s;
 }
@@ -80,13 +229,150 @@
   100% { transform: scale(1); }
 }
 
+    /* Pantalla de fin de juego */
+    .end-game-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      color: white;
+      text-align: center;
+      padding: 1vh 2vw;
+      gap: 1vh;
+    }
+    
+    .end-game-title {
+      font-size: 8vw;
+      margin: 2vh 0;
+      text-shadow: 0.2vw 0.2vw 0.4vw rgba(0,0,0,0.8);
+    }
+    
+    .end-game-score {
+      font-size: 6vw;
+      margin: 3vh 0;
+      color: #4CAF50;
+    }
+    
+    .end-game-time {
+      font-size: 4vw;
+      margin: 3vh 0;
+      color: #2196F3;
+    }
+    
+    .end-game-button {
+      padding: 1vh 4vw;
+      font-size: 3vw;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 1vw;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0.5vh 1vw;
+    }
+    
+    .end-game-button:hover {
+      transform: scale(1.05);
+      background: #45a049;
+    }
+    
+    /* Ranking */
+    .ranking-container {
+      margin: 3vh 0;
+      padding: 1vh 2vw;
+      background: rgba(255,255,255,0.1);
+      border-radius: 1vw;
+      max-height: 30vh;
+      overflow-y: auto;
+    }
+    
+    .ranking-title {
+      font-size: 3vw;
+      margin: 2vh 0;
+      color: #FFD700;
+    }
+    
+    .ranking-item {
+      font-size: 2vw;
+      margin: 0.5vh 0;
+      padding: 0.5vh 1vw;
+      background: rgba(255,255,255,0.1);
+      border-radius: 0.5vw;
+    }
+    
+    /* El contenido ahora se escala automáticamente con el tamaño de la ventana */
   </style>
-     
 </head>
 <body>
-  <div id="game-container">
+  <!-- Pantalla de bienvenida -->
+  <div id="welcome-screen">
+    <h1 class="welcome-title">🎓 Juego de Fracciones</h1>
+    <p class="welcome-subtitle">¡Aprende fracciones de manera divertida!</p>
+    
+    <div class="name-input-container">
+      <input type="text" 
+             id="player-name" 
+             class="name-input" 
+             placeholder="Ingresa tu nombre"
+             maxlength="20"
+             pattern="[A-Za-z0-9\s]+"
+             title="Solo letras, números y espacios">
+      <button id="start-game" class="start-button" disabled>¡Comenzar!</button>
+    </div>
+  </div>
+
+  <!-- Tablero escolar -->
+  <div id="blackboard-container">
+    <svg width="100%" height="100%" viewBox="0 0 1200 800" style="position: absolute; top: 0; left: 0; z-index: -1;">
+      <!-- Tablero escolar grande -->
+      <rect x="50" y="50" width="1100" height="700" rx="20" ry="20" fill="#2d4a3e" stroke="#1a2f26" stroke-width="5"/>
+      
+      <!-- Marco del tablero -->
+      <rect x="30" y="30" width="1140" height="740" rx="30" ry="30" fill="#8b4513" stroke="#654321" stroke-width="4"/>
+      
+      <!-- Líneas del tablero más espaciadas -->
+      <line x1="100" y1="150" x2="1100" y2="150" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      <line x1="100" y1="250" x2="1100" y2="250" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      <line x1="100" y1="350" x2="1100" y2="350" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      <line x1="100" y1="450" x2="1100" y2="450" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      <line x1="100" y1="550" x2="1100" y2="550" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      <line x1="100" y1="650" x2="1100" y2="650" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+      
+      <!-- Tiza decorativa más grande -->
+      <rect x="1150" y="80" width="20" height="60" fill="#f5f5dc" stroke="#d2b48c" stroke-width="2"/>
+      <rect x="1160" y="90" width="8" height="40" fill="#ffffff"/>
+      
+      <!-- Borrador más grande -->
+      <rect x="1150" y="160" width="30" height="20" fill="#8b7355" stroke="#654321" stroke-width="2"/>
+      <rect x="1155" y="165" width="20" height="10" fill="#d2b48c"/>
+      
+      <!-- Elementos decorativos del aula más grandes -->
+      <circle cx="80" cy="80" r="8" fill="#ffd700" opacity="0.7"/>
+      <circle cx="1120" cy="80" r="8" fill="#ffd700" opacity="0.7"/>
+      <circle cx="80" cy="720" r="8" fill="#ffd700" opacity="0.7"/>
+      <circle cx="1120" cy="720" r="8" fill="#ffd700" opacity="0.7"/>
+      
+      <!-- Clavos del tablero -->
+      <circle cx="80" cy="400" r="5" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+      <circle cx="1120" cy="400" r="5" fill="#8b4513" stroke="#654321" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <!-- Contenedor del juego -->
+  <div id="game-container" style="display: none;">
+    <div class="score-display">
+      Puntuación: <span id="score">0</span>
+    </div>
+    
     <div id="clock-area">
-      🕰️ <!-- Aquí luego irá el reloj SVG o un div animado -->
+      ⏰ <span id="timer">00:00</span>
     </div>
     
     <div id="game-board">
@@ -101,53 +387,310 @@
     </div>
   </div>
 
-  <audio id="bg-music" src="ambient.mp3" loop autoplay></audio>
-  <audio id="sound-correct" src="correct.mp3"></audio>
-  <audio id="sound-wrong" src="wrong.mp3"></audio>
+  <!-- Audio -->
+  <audio id="bg-music" src="../asset/music/musicaambientacion.mp3" loop></audio>
+  <audio id="sound-correct" src="../asset/music/musicadeambientacion3.mp3"></audio>
+  <audio id="sound-wrong" src="../asset/music/musicamabientacion.mp3"></audio>
 
   <script>
+    // Aquí guardamos las cosas importantes del juego
+    let puntuacion = 0
+    let preguntaActual = 0
+    let nombreJugador = ''
+    let tiempoInicio = 0
+    let relojJuego = null
+    let listaMejores = []
+    
+    // Las preguntas que vamos a mostrar
+    const preguntas = [
+      {
+        svg: `
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <!-- El círculo principal -->
+            <circle cx="100" cy="100" r="90" fill="#eee" stroke="black" stroke-width="2"/>
+            
+            <!-- Las líneas que dividen el círculo en 9 partes -->
+            <line x1="100" y1="100" x2="100" y2="10" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="55" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="190" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="100" y2="190" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="10" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="55" stroke="black" stroke-width="2"/>
+            
+            <!-- Las partes pintadas (3 de 9) -->
+            <path d="M100,100 L100,10 A90,90 0 0,1 178,55 Z" fill="#4caf50" stroke="black" stroke-width="1"/>
+            <path d="M100,100 L178,55 A90,90 0 0,1 190,100 Z" fill="#4caf50" stroke="black" stroke-width="1"/>
+            <path d="M100,100 L190,100 A90,90 0 0,1 178,145 Z" fill="#4caf50" stroke="black" stroke-width="1"/>
+          </svg>
+        `,
+        respuestaCorrecta: 'option3',
+        respuesta: '3/9'
+      },
+      {
+        svg: `
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <!-- El círculo principal -->
+            <circle cx="100" cy="100" r="90" fill="#eee" stroke="black" stroke-width="2"/>
+            
+            <!-- Las líneas que dividen el círculo en 9 partes -->
+            <line x1="100" y1="100" x2="100" y2="10" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="55" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="190" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="100" y2="190" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="10" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="55" stroke="black" stroke-width="2"/>
+            
+            <!-- Las partes pintadas (2 de 9) -->
+            <path d="M100,100 L100,10 A90,90 0 0,1 178,55 Z" fill="#ff9800" stroke="black" stroke-width="1"/>
+            <path d="M100,100 L178,55 A90,90 0 0,1 190,100 Z" fill="#ff9800" stroke="black" stroke-width="1"/>
+          </svg>
+        `,
+        respuestaCorrecta: 'option2',
+        respuesta: '2/9'
+      },
+      {
+        svg: `
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <!-- El círculo principal -->
+            <circle cx="100" cy="100" r="90" fill="#eee" stroke="black" stroke-width="2"/>
+            
+            <!-- Las líneas que dividen el círculo en 9 partes -->
+            <line x1="100" y1="100" x2="100" y2="10" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="55" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="190" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="178" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="100" y2="190" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="145" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="10" y2="100" stroke="black" stroke-width="2"/>
+            <line x1="100" y1="100" x2="22" y2="55" stroke="black" stroke-width="2"/>
+            
+            <!-- La parte pintada (1 de 9) -->
+            <path d="M100,100 L100,10 A90,90 0 0,1 178,55 Z" fill="#2196f3" stroke="black" stroke-width="1"/>
+          </svg>
+        `,
+        respuestaCorrecta: 'option1',
+        respuesta: '1/9'
+      }
+    ]
+
+    // Cuando la página se carga, hacemos esto
     document.addEventListener('DOMContentLoaded', () => {
-  const leftPanel = document.getElementById('left-panel');
-  // SVG de ejemplo: círculo partido en 9 con 3 partes pintadas
-  leftPanel.innerHTML = `
-    <svg width="200" height="200" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="90" fill="#eee" stroke="black" stroke-width="2"/>
-      <path d="M100,100 L100,10 A90,90 0 0,1 178,55 Z" fill="#4caf50"/>
-      <path d="M100,100 L178,55 A90,90 0 0,1 190,100 Z" fill="#4caf50"/>
-      <path d="M100,100 L190,100 A90,90 0 0,1 178,145 Z" fill="#4caf50"/>
-    </svg>
-  `;
-});
+      cargarRanking()
+      prepararPantallaBienvenida()
+    })
 
-
-const correctOptionId = 'option3'; // ejemplo: 3/9 es correcto
-
-document.querySelectorAll('.option').forEach(option => {
-  option.addEventListener('click', e => {
-    const id = e.currentTarget.id;
-    if(id === correctOptionId){
-      document.getElementById('sound-correct').play();
-      animateClock('green');
-    } else {
-      document.getElementById('sound-wrong').play();
-      animateClock('red');
+    // Preparar la pantalla donde el jugador pone su nombre
+    function prepararPantallaBienvenida() {
+      const entradaNombre = document.getElementById('player-name')
+      const botonComenzar = document.getElementById('start-game')
+      
+      entradaNombre.addEventListener('input', (e) => {
+        const nombre = e.target.value.trim()
+        botonComenzar.disabled = nombre.length < 2
+        
+        // Solo permitir letras, números y espacios
+        const nombreValido = nombre.replace(/[^A-Za-z0-9\s]/g, '')
+        e.target.value = nombreValido
+      })
+      
+      botonComenzar.addEventListener('click', comenzarJuego)
     }
-    // Aquí luego pasamos a la siguiente pregunta
-  });
-});
 
-function animateClock(color) {
-  const clock = document.getElementById('clock-area');
-  clock.style.color = color;
-  clock.classList.add('pulse');
-  setTimeout(() => clock.classList.remove('pulse'), 1000);
-}
+    // Empezar el juego
+    function comenzarJuego() {
+      nombreJugador = document.getElementById('player-name').value.trim()
+      if (nombreJugador.length < 2) return
+      
+      // Esconder la pantalla de bienvenida
+      document.getElementById('welcome-screen').style.display = 'none'
+      document.getElementById('game-container').style.display = 'flex'
+      
+      // Empezar a contar el tiempo
+      tiempoInicio = Date.now()
+      actualizarReloj()
+      relojJuego = setInterval(actualizarReloj, 1000)
+      
+      // Mostrar la primera pregunta
+      cargarPregunta()
+      prepararSonidos()
+    }
 
+    // Actualizar el reloj que muestra el tiempo
+    function actualizarReloj() {
+      const tiempoTranscurrido = Math.floor((Date.now() - tiempoInicio) / 1000)
+      const minutos = Math.floor(tiempoTranscurrido / 60)
+      const segundos = tiempoTranscurrido % 60
+      document.getElementById('timer').textContent = 
+        `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
+    }
+
+    // Mostrar una pregunta
+    function cargarPregunta() {
+      if (preguntaActual >= preguntas.length) {
+        terminarJuego()
+        return
+      }
+      
+      const pregunta = preguntas[preguntaActual]
+      const panelIzquierdo = document.getElementById('left-panel')
+      panelIzquierdo.innerHTML = pregunta.svg
+      
+      // Limpiar las opciones anteriores
+      document.querySelectorAll('.option').forEach(opcion => {
+        opcion.classList.remove('correct', 'wrong')
+        opcion.style.pointerEvents = 'auto'
+      })
+    }
+
+    // Preparar los sonidos del juego
+    function prepararSonidos() {
+      const musicaFondo = document.getElementById('bg-music')
+      const sonidoCorrecto = document.getElementById('sound-correct')
+      const sonidoIncorrecto = document.getElementById('sound-wrong')
+      
+      musicaFondo.volume = 0.3
+      musicaFondo.play().catch(e => console.log('No se pudo reproducir la música'))
+      
+      sonidoCorrecto.volume = 0.5
+      sonidoIncorrecto.volume = 0.5
+    }
+
+    // Cuando el jugador hace clic en una opción
+    document.querySelectorAll('.option').forEach(opcion => {
+      opcion.addEventListener('click', e => {
+        const id = e.currentTarget.id
+        const pregunta = preguntas[preguntaActual]
+        
+        if (id === pregunta.respuestaCorrecta) {
+          manejarRespuestaCorrecta(e.currentTarget)
+        } else {
+          manejarRespuestaIncorrecta(e.currentTarget, pregunta.respuestaCorrecta)
+        }
+      })
+    })
+
+    // Cuando la respuesta es correcta
+    function manejarRespuestaCorrecta(opcionSeleccionada) {
+      document.getElementById('sound-correct').play()
+      opcionSeleccionada.classList.add('correct')
+      puntuacion += 10
+      document.getElementById('score').textContent = puntuacion
+      animarReloj('green')
+      
+      setTimeout(() => {
+        preguntaActual++
+        cargarPregunta()
+      }, 1500)
+    }
+
+    // Cuando la respuesta es incorrecta
+    function manejarRespuestaIncorrecta(opcionSeleccionada, opcionCorrectaId) {
+      document.getElementById('sound-wrong').play()
+      opcionSeleccionada.classList.add('wrong')
+      document.getElementById(opcionCorrectaId).classList.add('correct')
+      animarReloj('red')
+      
+      // No permitir más clics
+      document.querySelectorAll('.option').forEach(opcion => {
+        opcion.style.pointerEvents = 'none'
+      })
+      
+      setTimeout(() => {
+        preguntaActual++
+        cargarPregunta()
+      }, 2000)
+    }
+
+    // Hacer que el reloj se anime cuando respondes
+    function animarReloj(color) {
+      const reloj = document.getElementById('clock-area')
+      reloj.style.color = color
+      reloj.classList.add('pulse')
+      setTimeout(() => reloj.classList.remove('pulse'), 1000)
+    }
+
+    // Terminar el juego
+    function terminarJuego() {
+      clearInterval(relojJuego)
+      const tiempoJuego = Math.floor((Date.now() - tiempoInicio) / 1000)
+      
+      // Guardar el resultado
+      guardarResultado(nombreJugador, puntuacion, tiempoJuego)
+      
+      // Mostrar la pantalla final
+      mostrarPantallaFinal(puntuacion, tiempoJuego)
+    }
+
+    // Mostrar la pantalla cuando termina el juego
+    function mostrarPantallaFinal(puntuacion, tiempo) {
+      const contenedorJuego = document.getElementById('game-container')
+      const minutos = Math.floor(tiempo / 60)
+      const segundos = tiempo % 60
+      const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
+      
+      contenedorJuego.innerHTML = `
+        <div class="end-game-screen">
+          <h1 class="end-game-title">¡Juego Terminado!</h1>
+          <div class="end-game-score">Puntuación: ${puntuacion}</div>
+          <div class="end-game-time">Tiempo: ${tiempoTexto}</div>
+          
+          <div class="ranking-container">
+            <h2 class="ranking-title">🏆 Mejores Jugadores</h2>
+            ${generarHTMLRanking()}
+          </div>
+          
+          <button onclick="location.reload()" class="end-game-button">Jugar de Nuevo</button>
+          <button onclick="window.location.href='juego.html'" class="end-game-button">Volver al Menú</button>
+        </div>
+      `
+    }
+
+    // Crear la lista de mejores jugadores
+    function generarHTMLRanking() {
+      return listaMejores.slice(0, 5).map((jugador, indice) => {
+        const minutos = Math.floor(jugador.time / 60)
+        const segundos = jugador.time % 60
+        const tiempoTexto = `${minutos}:${segundos.toString().padStart(2, '0')}`
+        return `
+          <div class="ranking-item">
+            ${indice + 1}. ${jugador.name} - ${jugador.score} puntos (${tiempoTexto})
+          </div>
+        `
+      }).join('')
+    }
+
+    // Guardar el resultado en la memoria del navegador
+    function guardarResultado(nombre, puntuacion, tiempo) {
+      const resultado = { name: nombre, score: puntuacion, time: tiempo, date: new Date().toISOString() }
+      
+      // Obtener la lista de mejores jugadores que ya existe
+      const rankingExistente = JSON.parse(localStorage.getItem('facilRanking') || '[]')
+      
+      // Agregar el nuevo resultado
+      rankingExistente.push(resultado)
+      
+      // Ordenar por puntuación (más puntos primero) y tiempo (más rápido primero)
+      rankingExistente.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score
+        return a.time - b.time
+      })
+      
+      // Mantener solo los 10 mejores
+      const mejores10 = rankingExistente.slice(0, 10)
+      
+      // Guardar en la memoria
+      localStorage.setItem('facilRanking', JSON.stringify(mejores10))
+      listaMejores = mejores10
+    }
+
+    // Cargar la lista de mejores jugadores
+    function cargarRanking() {
+      listaMejores = JSON.parse(localStorage.getItem('facilRanking') || '[]')
+    }
   </script>
-</body>
-</html>
-
-</head>
-<body>
 </body>
 </html>
