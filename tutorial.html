@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Hover Video Animado</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    .contenedor {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      background-color: #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .video-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .contenedor:hover .video-hover {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+
+    }
+
+    video {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <!-- Puedes poner aquí una imagen o texto de fondo -->
+    <video class="video-hover" src="/trabajo_final/asset/videotuto/canciondeltutorial.mp4" muted autoplay loop></video>
+  </div>
+
+</body>
+</html>
