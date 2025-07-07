@@ -588,7 +588,10 @@ width: 100%;
     </svg>
   </div>
 
-<div class="paginaprincipal">
+  <!-- Audio -->
+  <audio id="click-sound" src="/asset/music/click-sound.mp3" preload="auto"></audio>
+  
+  <div class="paginaprincipal">
             <audio src="/asset/music/musicadeambientacion3.mp3" id="audi"></audio>
         <div class="titulo" onclick="audio()">PARTES<br>QUE<br>CUENTAN</div>
      
@@ -614,6 +617,7 @@ width: 100%;
     const video = document.getElementById('video')
     const cronometro = document.getElementById('cronometro')
     const logoContainers = document.querySelectorAll('.logo-container')
+    const clickSound = document.getElementById('click-sound')
     let intervalo
 
     // reproducir musica cuando carga la pagina
@@ -742,6 +746,21 @@ width: 100%;
 
     btnNiveles.addEventListener('click', () => {
       window.location.href = '/games/niveles.html'
+    })
+
+    // Función para reproducir sonido de clic
+    function playClickSound() {
+      if (clickSound) {
+        clickSound.currentTime = 0
+        clickSound.play().catch(e => console.log('No se pudo reproducir el sonido de clic'))
+      }
+    }
+
+    // Agregar evento de clic a todos los botones
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('btn') || e.target.closest('.btn')) {
+        playClickSound()
+      }
     })
   </script>
 
