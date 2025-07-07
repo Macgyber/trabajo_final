@@ -58,7 +58,7 @@
       transform: scale(1.1) rotate(2deg);
     }
     /* Animación de piezas del logo al hacer hover */
-    .logo_svg { width: 120px; display: block; margin: 0 auto 16px auto; cursor: pointer; transition: filter 0.3s; }
+    .logo_svg { width: 200px; display: block; margin: 0 auto 16px auto; cursor: pointer; transition: filter 0.3s; }
     .logo_svg .rompepieza { transition: transform 0.6s cubic-bezier(.68,-0.55,.27,1.55); }
     .logo_svg:hover .romperojo { transform: translate(-18px, -18px) rotate(-10deg); }
     .logo_svg:hover .rompeverde { transform: translate(-18px, 18px) rotate(-10deg); }
@@ -84,9 +84,9 @@
       margin-bottom: 12px;
     }
     .manito_izq, .manito_der {
-      font-size: 2rem;
+      font-size: 4rem;
       user-select: none;
-      animation: manito-move 1s infinite alternate;
+      animation: manito-move 0.5s infinite alternate;
       display: inline-block;
     }
     .manito_izq {
@@ -161,10 +161,12 @@
       border: 2px solid #ffe066;
       border-radius: 14px;
       box-shadow: 0 2px 8px #ffe06644;
-      padding: 18px 14px;
-      flex: 1;
-      min-width: 0;
-      margin: 0 4px;
+      padding: 2px 33px;
+      flex: 1 1 ;
+      min-width: 315px;
+      min-height: 215px;
+      max-width: 520px;
+      margin: 0 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -184,6 +186,9 @@
       border-radius: 10px;
       border: 2px solid #3b82f6;
       background: #e3f6fd;
+      width: 118%;
+      height: 100%;
+      object-fit: cover;
     }
     @media (max-width: 700px) {
       .tutorial_fila {
@@ -320,9 +325,9 @@
     </svg>
     <h1>Bienvenido al juego de fracciones</h1>
     <div class="input_nombre_con_manitos">
-      <span class="manito_izq" title="Escribe tu nombre">👈</span>
-      <input id="input_nombre" class="input_nombre" type="text" placeholder="Escribe tu nombre">
-      <span class="manito_der" title="Escribe tu nombre">👉</span>
+      <span class="manito_izq" title="Escribe tu nombre">👉</span>
+      <input id="input_nombre" class="input_nombre" type="text" placeholder="Escribe tu nombre Para iniciar">
+      <span class="manito_der" title="Escribe tu nombre">👈</span>
     </div>
     <p>Aquí puedes aprender y jugar con fracciones</p>
     <button id="boton_ir_menu" class="boton" disabled>Ir al menú principal</button>
@@ -396,12 +401,15 @@
   
  <!-- ESTA ES LA PARTE DEL JAVASCRIPT -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="materiales/jquery-3.7.1.min.js"></script>
+  <script src="jquery-3.7.1.min.js"></script>
 
   <!-- Sonidos -->
   <audio id="sonido_correcto" src="correcto.mp3"></audio>
   <audio id="sonido_incorrecto" src="incorrecto.mp3"></audio>
   <audio id="sonido_click" src="clickenunboton.mp3"></audio>
+
+  <!-- Música de ambientación -->
+  <audio id="musica_ambiente" src="musicadeambientacion3.mp3" loop></audio>
 
   <script>
     // =============================
@@ -462,23 +470,29 @@
     $("#boton_ir_menu").click(function() {
       nombre_usuario = $("#input_nombre").val()
       mostrarCaja("menu_principal")
+      reproducirMusica()
     });
     $("#boton_ir_tutorial").click(function() {
       mostrarCaja("pagina_tutorial")
+      pausarMusica()
     });
     $("#boton_ir_juego").click(function() {
       iniciarJuego()
       mostrarCaja("pagina_juego")
+      reproducirMusica()
     });
     $("#boton_volver_menu").click(function() {
       mostrarCaja("menu_principal")
+      reproducirMusica()
     });
     $("#boton_volver_menu_final").click(function() {
       mostrarCaja("menu_principal")
+      reproducirMusica()
     });
     $("#boton_salir").click(function() {
       alert("Gracias por jugar")
       mostrarCaja("pagina_inicio")
+      reproducirMusica()
     });
     $("#boton_terminar").click(function() {
       mostrarFinal()
@@ -654,7 +668,26 @@
       let texto = `Tiempo total: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
       $("#caja_tiempo_final").text(texto)
     }
-  </script>
 
+    // =============================
+    // SECCIÓN: Música de ambientación
+    // =============================
+    function reproducirMusica() {
+      let audio = $("#musica_ambiente")[0]
+      if (audio.paused) {
+        audio.volume = 0.25
+        audio.play()
+      }
+    }
+    function pausarMusica() {
+      let audio = $("#musica_ambiente")[0]
+      if (!audio.paused) audio.pause()
+    }
+    // Iniciar música al cargar la página principal
+    $(document).ready(function() {
+      reproducirMusica()
+    })
+  </script>
+<!-- Fin del script -->
 </body>
 </html>
