@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Partes que cuenta - Nivel Fácil</title>
   <link rel="icon" type="image/svg+xml" href="../asset/svg/logofraccionario.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Puddles:ital,wght@0,400&display=swap" rel="stylesheet">
   <style>
     * {
   margin: 0;
@@ -15,7 +16,7 @@
     body {
       width: 100%;
       min-height: 100vh;
-      background-image: url('../asset/image/nivel facil interfaz.jpg');
+      /*background-image: url('../asset/image/nivel facil interfaz.jpg');*/
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -117,7 +118,7 @@
       width: 100%;
       height: 100vh;
       z-index: 1;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
     }
@@ -471,9 +472,193 @@
     }
     
     /* El contenido ahora se escala automáticamente con el tamaño de la ventana */
+
+    /* Logo animado */
+    .logo-container {
+      position: fixed;
+      top: 2vh;
+      left: 2vw;
+      width: clamp(150px, 15vw, 300px);
+      height: clamp(150px, 15vw, 300px);
+      z-index: 100;
+      cursor: pointer;
+      transition: all 0.5s ease;
+    }
+
+    .logo-container svg {
+      width: 100%;
+      height: 100%;
+      transition: all 0.5s ease;
+    }
+
+    /* Animaciones de las piezas del rompecabezas */
+    .logo-container:hover #romperojo {
+      transform: translate(-10px, -10px) rotate(-5deg);
+      transition: all 0.5s ease;
+    }
+
+    .logo-container:hover #rompeverde {
+      transform: translate(-10px, 10px) rotate(5deg);
+      transition: all 0.5s ease;
+    }
+
+    .logo-container:hover #rompeazul {
+      transform: translate(10px, -10px) rotate(5deg);
+      transition: all 0.5s ease;
+    }
+
+    .logo-container:hover #rompeamarillo {
+      transform: translate(10px, 10px) rotate(-5deg);
+      transition: all 0.5s ease;
+    }
+
+    /* Estado normal (piezas juntas) */
+    #romperojo, #rompeverde, #rompeazul, #rompeamarillo {
+      transition: all 0.5s ease;
+    }
+
+    /* Efecto de brillo al hover */
+    .logo-container:hover svg {
+      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+    }
+
+    /* Media queries para responsive */
+    @media (max-width: 768px) {
+      .logo-container {
+        top: 1vh;
+        left: 1vw;
+        width: clamp(100px, 12vw, 200px);
+        height: clamp(100px, 12vw, 200px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo-container {
+        top: 0.5vh;
+        left: 0.5vw;
+        width: clamp(80px, 10vw, 150px);
+        height: clamp(80px, 10vw, 150px);
+      }
+    }
+
+    @media (min-width: 1920px) {
+      .logo-container {
+        top: 3vh;
+        left: 3vw;
+        width: clamp(300px, 18vw, 400px);
+        height: clamp(300px, 18vw, 400px);
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Logo animado -->
+  <div class="logo-container">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="inner-shadow-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#ff0000b3" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#006fffb3" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="11"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1.2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#38f300" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="16"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1.14"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#ff7900" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="brightness-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="2"/>
+            <feFuncG type="linear" slope="2"/>
+            <feFuncB type="linear" slope="2"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="brightness-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="2"/>
+            <feFuncG type="linear" slope="2"/>
+            <feFuncB type="linear" slope="2"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="gaussian-blur-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="10 10" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0 0" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5.8 5.8" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0.7 0.7" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-4" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0 0" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-5" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0.9 0.9" edgeMode="none"/>
+        </filter>
+      </defs>
+      <g id="logo">
+        <rect x="128.335" y="143.246" width="233.473" height="226.774" style="stroke-width: 11px; stroke: rgb(0, 0, 0);" rx="25.403" ry="25.403" id="rompecabezaslogo"/>
+        <g id="romperojo">
+          <path style="stroke: rgb(134, 1, 18); fill: rgb(255, 86, 86); filter: url(#inner-shadow-filter-0);" d="M 238.385 147.185 L 238.324 180.668 C 238.347 188.814 242.399 190.61 250.479 186.056 C 255.11 183.446 260.653 183.727 265.945 188.546 C 278.342 199.835 260.166 221.836 244.73 207.543 C 243.758 206.643 242.437 206.739 240.767 207.829 C 239.572 208.609 238.701 209.739 238.154 211.22 C 238.154 211.22 238.131 224.098 238.084 249.854 C 238.084 249.854 228.032 249.968 207.929 250.197 C 207.929 250.197 208.509 248.768 209.669 245.91 C 213.005 237.692 209.771 229.433 199.969 221.134 C 194.258 216.299 186.877 215.215 177.826 217.881 C 172.822 219.355 168.721 222.577 165.521 227.549 C 161.451 233.873 160.752 241.361 163.424 250.013 C 163.424 250.013 153.605 249.951 133.968 249.827 C 133.968 249.827 133.983 221.82 134.012 165.805 C 134.014 161.699 135.817 158.01 139.421 154.738 C 142.939 151.544 147.196 149.432 152.192 148.403 C 152.192 148.403 180.923 147.997 238.385 147.185 Z" id="rojo"/>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre;" transform="matrix(2.551356, 0, 0, 2.785255, -224.370865, -308.125275)" x="143.318" y="187.53" id="letrap">P</text>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#gaussian-blur-filter-5);" transform="matrix(2.551356, 0, 0, 2.785255, -223.532303, -313.940521)" x="143.318" y="187.53" id="sombrap">P</text>
+        </g>
+        <g id="rompeverde">
+          <path style="stroke: rgb(33, 137, 98); fill: rgb(0, 255, 176); filter: url(#inner-shadow-filter-2);" d="M 133.68 348.509 L 133.736 260.414 L 165.278 260.6 C 175.043 260.36 178.615 256.826 175.994 249.997 C 173.451 243.371 172.642 238.895 173.568 236.57 C 175.48 231.768 179.738 228.837 186.34 227.777 C 189.524 227.266 192.62 228.168 195.628 230.482 C 200.427 234.173 201.136 240.186 197.756 248.519 C 196.913 250.598 196.601 252.82 196.821 255.185 C 197.062 257.777 199.108 259.387 202.959 260.014 C 202.959 260.014 213.854 259.927 237.447 259.858 C 237.447 259.878 238.403 290.094 238.055 290.404 C 238.055 290.404 236.23 289.734 232.579 288.395 C 232.579 288.395 229.59 288.743 223.611 289.438 C 218.053 290.084 213.454 293.271 209.814 298.998 C 204.761 306.948 204.835 316.369 210.037 327.259 C 211.466 330.251 215.251 332.763 221.393 334.795 C 226.736 336.563 232.323 335.889 238.154 332.773 C 238.154 332.773 238.004 343.192 238.344 364.833 C 238.344 364.833 209.083 365.051 149.92 364.685 C 149.92 364.685 147.083 363.392 141.408 360.807 C 137.017 356.712 134.441 352.613 133.68 348.509 Z" id="verde"/>
+          <rect x="143.419" y="301.417" width="59.101" height="19.469" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-1);" id="resta"/>
+          <rect x="142.859" y="301.368" width="59.101" height="19.469" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); stroke-width: 1; filter: url(#brightness-filter-1) url(#gaussian-blur-filter-2);" id="sombraresta"/>
+        </g>
+        <g id="rompeazul">
+          <path style="stroke: rgb(12, 126, 142); fill: rgb(58, 228, 255); filter: url(#inner-shadow-filter-1);" d="M 248.546 148.648 L 249.022 177.103 C 258.36 172.46 266.983 174.419 274.892 182.979 C 277.65 185.964 279.395 189.636 280.127 193.992 C 281.435 201.777 279.041 209.299 272.945 216.558 C 267.78 222.708 259.289 224.061 248.64 220.724 C 248.64 220.724 249.088 230.834 248.815 250.947 C 248.815 250.947 261.022 250.943 285.437 250.936 C 287.941 250.935 289.729 252.687 290.803 256.192 C 291.059 257.027 290.32 259.116 288.586 262.457 C 286.365 266.736 286.331 271.557 288.484 276.92 C 290.63 282.265 296.045 284.225 304.73 282.802 C 309.989 281.94 313.487 277.921 315.225 270.743 C 316.165 266.862 314.912 263.07 311.467 259.367 C 310.599 258.434 310.36 257.181 310.751 255.61 C 311.714 251.74 315.276 249.947 321.438 250.232 C 321.438 250.232 333.049 250.341 356.27 250.56 C 356.27 250.56 356.304 223.066 356.373 168.079 C 356.383 160.496 351.956 154.338 343.094 149.606 C 341.888 148.962 339.753 148.661 336.688 148.703 C 336.688 148.703 307.307 148.685 248.546 148.648 Z" id="azul"/>
+          <path d="M 306.366 170.771 H 326.507 V 188.214 H 346.056 V 206.183 H 326.507 V 223.626 H 306.366 V 206.183 H 286.817 V 188.214 H 306.366 Z" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-0) url(#gaussian-blur-filter-1);" id="suma"/>
+          <path d="M 306.211 171.051 H 326.352 V 188.493 H 345.901 V 206.464 H 326.352 V 223.906 H 306.211 V 206.464 H 286.662 V 188.493 H 306.211 Z" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-0) url(#gaussian-blur-filter-0); stroke-width: 1;" id="sombrasuma"/>
+        </g>
+        <g id="rompeamarillo">
+          <path style="stroke: rgb(158, 142, 0); fill: rgb(255, 233, 103); filter: url(#inner-shadow-filter-3);" d="M 276.463 260.432 L 248.074 260.045 L 247.663 298.523 C 243.6 303.335 238.687 303.612 232.923 299.354 C 232.462 299.013 230.727 298.935 227.718 299.118 C 223.667 299.364 220.284 301.607 217.569 305.846 C 214.872 310.056 215.24 315.042 218.673 320.805 C 221.259 325.145 226.143 326.437 233.326 324.679 C 235.294 324.197 237.156 323.318 238.914 322.041 C 240.388 320.97 242.205 320.835 244.364 321.635 C 248.015 322.988 249.29 326.727 248.188 332.852 C 248.188 332.852 247.82 342.967 248.436 364.444 C 248.436 364.444 278.136 364.527 337.537 364.693 C 338.634 364.696 341.453 363.825 345.994 362.08 C 351.304 360.04 354.476 355.318 355.511 347.916 C 355.511 347.916 355.482 318.8 355.424 260.568 C 355.424 260.568 344.467 260.668 322.552 260.869 C 322.552 260.869 323.163 262.446 324.386 265.599 C 324.386 265.599 324.317 267.994 324.18 272.785 C 323.925 281.703 318.478 289.79 306.499 292.878 C 298.402 294.966 289.374 292.989 280.064 285.194 C 273.621 279.8 272.714 271.214 276.463 260.432 Z" id="amarillo"/>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#brightness-filter-1) url(#gaussian-blur-filter-4);" transform="matrix(2.831103, 0, 0, 2.849609, -129.525803, -176.712234)" x="143.318" y="187.53" id="letrac">C</text>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#brightness-filter-1) url(#gaussian-blur-filter-3);" transform="matrix(2.831103, 0, 0, 2.849609, -133.741745, -177.835114)" x="143.318" y="187.53" id="sombrac">C</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
   <!-- Pantalla de bienvenida -->
   <div id="welcome-screen">
     <h1 class="welcome-title">🎓 Juego de Fracciones</h1>
@@ -736,6 +921,7 @@
       // Esconder la pantalla de bienvenida
       document.getElementById('welcome-screen').style.display = 'none'
       document.getElementById('game-container').style.display = 'flex'
+      document.getElementById('blackboard-container').style.display = 'flex'
       
       // Empezar a contar el tiempo
       tiempoInicio = Date.now()
@@ -857,6 +1043,7 @@
     // Mostrar la pantalla cuando termina el juego
     function mostrarPantallaFinal(puntuacion, tiempo) {
       const contenedorJuego = document.getElementById('game-container')
+      document.getElementById('blackboard-container').style.display = 'none'
       const minutos = Math.floor(tiempo / 60000)
       const segundos = Math.floor((tiempo % 60000) / 1000)
       const milesimas = Math.floor((tiempo % 1000) / 10)
@@ -944,6 +1131,7 @@
     function mostrarPantallaRanking() {
       // Esconder la pantalla de bienvenida
       document.getElementById('welcome-screen').style.display = 'none'
+      document.getElementById('blackboard-container').style.display = 'none'
       
       // Crear pantalla de ranking
       const rankingScreen = document.createElement('div')
