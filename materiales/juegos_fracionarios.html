@@ -7,40 +7,44 @@
   <style>
     /* Esta parte controla el estilo de las cajas y botones */
     body {
-      background: linear-gradient(135deg, #f0f8ff 0%, #ffe066 100%);
-      font-family: Arial, sans-serif;
+      background:linear-gradient(180deg,#FF5959 ,#FFAD5A ,#4F9DA6 ,#1A084125 ) no-repeat;
+      font-family: frijole;
+      font-size: 30px;
     }
     .caja_pagina {
+      position: relative;
       display: none; /* Al inicio todas las cajas están ocultas */
       text-align: center;
-      padding: 20px;
-      border: 2px solid #3b82f6;
+      top: -250px;
+      padding: 377px;
       border-radius: 16px;
       margin: 30px auto;
-      max-width: 440px;
-      background: #e3f6fd;
-      box-shadow: 0 2px 12px #ffe06655;
+      max-width: 640px;
+      max-height: 800px;
+      background: transparent;
+      
     }
     .boton {
       padding: 12px 24px;
       margin: 8px;
-      background-color: #ffe066;
-      border: 2px solid #3b82f6;
+      background-color: #0b9dff;
       border-radius: 8px;
       cursor: pointer;
       font-size: 1rem;
+      font-family: frijole;
       font-weight: bold;
-      color: #1e293b;
+      color: #ffffff;
       transition: background 0.2s, color 0.2s;
     }
     .boton:hover {
-      background-color: #3b82f6;
-      color: #fff;
+      background-color: #087bc7;
+      color: hsl(0, 0%, 58%);
+      scale: 1.05;
     }
     .logo_animado {
       display: block;
       margin: 0 auto 16px auto;
-      width: 120px;
+      width: 128px;
       animation: giroLogo 2s infinite alternate;
       position: relative;
       transition: filter 0.3s;
@@ -70,10 +74,12 @@
     .input_nombre {
       padding: 8px;
       border-radius: 6px;
-      border: 1px solid #b0c4de;
+      border: 1px solid #000000;
+      text-align: center;
       margin-bottom: 12px;
       width: 80%;
       font-size: 1rem;
+      font-family: frijole;
       z-index: 2;
     }
     .input_nombre_con_manitos {
@@ -86,7 +92,7 @@
     .manito_izq, .manito_der {
       font-size: 4rem;
       user-select: none;
-      animation: manito-move 0.5s infinite alternate;
+      animation: manito-move 0.8s infinite alternate;
       display: inline-block;
     }
     .manito_izq {
@@ -113,18 +119,18 @@
       margin: 8px auto;
       padding: 10px 0;
       width: 80%;
-      background: #fffbe6;
-      border: 2px solid #3b82f6;
+      background-color: #0b9dff;
       border-radius: 8px;
       cursor: pointer;
       font-size: 1rem;
       font-weight: bold;
-      color: #1e293b;
+      color: #ffffff;
       transition: background 0.2s, color 0.2s;
     }
     .opcion:hover {
-      background: #3b82f6;
-      color: #fff;
+     background-color: #087bc7;
+      color: hsl(0, 0%, 58%);
+      scale: 1.05;
     }
     .mostrar {
       display: block;
@@ -140,6 +146,7 @@
       max-width: 350px;
       margin-left: auto;
       margin-right: auto;
+      display: none; /* Oculto por defecto */
     }
     .contador_pregunta {
       color: #3b82f6;
@@ -533,7 +540,7 @@
       preguntas = generarPreguntasPorDificultad(dificultad)
       mostrarPregunta()
       $("#caja_puntos").text("Puntos: 0")
-      $("#frase_motivante").text("")
+      $("#frase_motivante").text("").hide()
       // Iniciar el reloj
       segundos_totales = 0
       actualizarReloj()
@@ -578,6 +585,22 @@
 
     function mostrarPregunta() {
       ejercicio_actual = preguntas[pregunta_actual]
+      // Mezclar opciones y actualizar el índice de la correcta
+      let opciones = [...ejercicio_actual.opciones]
+      let correcta = ejercicio_actual.correcta
+      // Algoritmo de Fisher-Yates para mezclar
+      for (let i = opciones.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        // Intercambiar opciones
+        let temp = opciones[i]
+        opciones[i] = opciones[j]
+        opciones[j] = temp
+        // Si intercambiamos la correcta, actualizamos el índice
+        if (i === correcta) correcta = j
+        else if (j === correcta) correcta = i
+      }
+      ejercicio_actual.opciones_mezcladas = opciones
+      ejercicio_actual.correcta_mezclada = correcta
       // Mostrar el contador de preguntas
       let numPregunta = pregunta_actual + 1
       let totalPreguntas = 5
@@ -586,7 +609,7 @@
       $("#contador_pregunta").text(`Pregunta ${numPregunta} de 15`)
       $("#caja_ejercicio").text(ejercicio_actual.texto)
       let opcionesHtml = ""
-      ejercicio_actual.opciones.forEach(function(op, idx) {
+      ejercicio_actual.opciones_mezcladas.forEach(function(op, idx) {
         opcionesHtml += `<button class='opcion' data-idx='${idx}'>${op}</button>`
       })
       $("#opciones_respuesta").html(opcionesHtml)
@@ -597,7 +620,7 @@
     // =============================
     $(document).on("click", ".opcion", function() {
       let idx = parseInt($(this).attr("data-idx"))
-      if (idx === ejercicio_actual.correcta) {
+      if (idx === ejercicio_actual.correcta_mezclada) {
         puntos += 10
         sonarCorrecto()
         aciertos++
@@ -607,7 +630,13 @@
       }
       $("#caja_puntos").text(`Puntos: ${puntos}`)
       pregunta_actual++
-      if (pregunta_actual % 5 === 0 && pregunta_actual < 15) {
+      
+      // Calcular el número total de preguntas respondidas
+      let preguntasRespondidas = pregunta_actual
+      if (dificultad === "intermedio") preguntasRespondidas += 5
+      if (dificultad === "dificil") preguntasRespondidas += 10
+      
+      if (pregunta_actual % 5 === 0 && preguntasRespondidas < 15) {
         // Cambiar dificultad y mostrar frase motivante
         if (dificultad === "facil") {
           dificultad = "intermedio"
@@ -617,13 +646,13 @@
         preguntas = generarPreguntasPorDificultad(dificultad)
         pregunta_actual = 0
         let frase = frases_motivantes[nivel-1] || frases_motivantes[frases_motivantes.length-1]
-        $("#frase_motivante").text(`${frase} ¡Vamos, ${nombre_usuario}}!`)
+        $("#frase_motivante").text(`${frase} ¡Vamos, ${nombre_usuario}}!`).show()
         nivel++
         setTimeout(function() {
-          $("#frase_motivante").text("")
+          $("#frase_motivante").text("").hide()
           mostrarPregunta()
         }, 2000)
-      } else if (pregunta_actual >= 5) {
+      } else if (preguntasRespondidas >= 15) {
         mostrarFinal()
       } else {
         mostrarPregunta()
@@ -660,7 +689,7 @@
       } else {
         frase = `¡Ánimo, ${nombre}! Puedes mejorar con más práctica.`
       }
-      $("#caja_frase_final").text(frase)
+      $("#caja_frase_final").text(frase).show()
       // Detener el reloj y mostrar el tiempo final
       if (reloj_intervalo) { clearInterval(reloj_intervalo) }
       let minutos = Math.floor(segundos_totales / 60)
