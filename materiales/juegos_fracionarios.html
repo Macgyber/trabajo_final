@@ -1,38 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Juego educativo de fracciones para aprender y divertirse.">
   <title>Juego de Fracciones</title>
 <link rel="shortcut icon" href="logofraccionario.svg" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Frijole&display=swap" rel="stylesheet">
   <!-- ESTA ES LA PARTE DEL ESTILO -->
   <style>
     /* Esta parte controla el estilo de las cajas y botones */
     body {
       background:linear-gradient(180deg,#FF5959 ,#FFAD5A ,#4F9DA6 ,#1A084125 ) no-repeat;
-      font-family: 'Frijole', cursive;
-      font-size: 100%; /* TAMAÑO BASE: 100% = 16px por defecto */
-      margin: 0;
-      padding: 0;
-      min-height: 95dvh;
-      overflow-x: hidden;
-    }
-    h1, h2, h3, .titulo_principal {
-      font-size: 220%; /* TÍTULOS GRANDES */
+      font-family: frijole;
+      font-size: 30px;
     }
     .caja_pagina {
       position: relative;
-      display: none;
+      display: none; /* Al inicio todas las cajas están ocultas */
       text-align: center;
-      /*padding: clamp(20px, 5vw, 50px);*/
-      /*border-radius: 16px;*/
-      margin: 20px auto;
+      top: -250px;
+      padding: 377px;
+      border-radius: 16px;
+      margin: 30px auto;
       max-width: 640px;
+      max-height: 800px;
       background: transparent;
-      box-sizing: border-box;
+      
     }
     .boton {
       padding: 12px 24px;
@@ -40,8 +30,8 @@
       background-color: #0b9dff;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 120%; /* OPCIONES Y BOTONES */
-      font-family: 'Frijole', cursive;
+      font-size: 1rem;
+      font-family: frijole;
       font-weight: bold;
       color: #ffffff;
       transition: background 0.2s, color 0.2s;
@@ -55,7 +45,7 @@
       display: block;
       margin: 0 auto 16px auto;
       width: 128px;
-      animation: giroLogo 0.5s infinite alternate;
+      animation: giroLogo 2s infinite alternate;
       position: relative;
       transition: filter 0.3s;
       z-index: 1;
@@ -72,13 +62,7 @@
       transform: scale(1.1) rotate(2deg);
     }
     /* Animación de piezas del logo al hacer hover */
-    .logo_svg { 
-      width: clamp(150px, 25vw, 200px);
-      display: block; 
-      margin: 0 auto 16px auto; 
-      cursor: pointer; 
-      transition: filter 0.3s; 
-    }
+    .logo_svg { width: 200px; display: block; margin: 0 auto 16px auto; cursor: pointer; transition: filter 0.3s; }
     .logo_svg .rompepieza { transition: transform 0.6s cubic-bezier(.68,-0.55,.27,1.55); }
     .logo_svg:hover .romperojo { transform: translate(-18px, -18px) rotate(-10deg); }
     .logo_svg:hover .rompeverde { transform: translate(-18px, 18px) rotate(-10deg); }
@@ -93,9 +77,9 @@
       border: 1px solid #000000;
       text-align: center;
       margin-bottom: 12px;
-      width: clamp(250px, 80%, 400px);
-      font-size: 110%; /* INPUT */
-      font-family: 'Frijole', cursive;
+      width: 80%;
+      font-size: 1rem;
+      font-family: frijole;
       z-index: 2;
     }
     .input_nombre_con_manitos {
@@ -106,7 +90,7 @@
       margin-bottom: 12px;
     }
     .manito_izq, .manito_der {
-      font-size: clamp(2rem, 8vw, 4rem);
+      font-size: 4rem;
       user-select: none;
       animation: manito-move 0.8s infinite alternate;
       display: inline-block;
@@ -134,11 +118,11 @@
       display: block;
       margin: 8px auto;
       padding: 10px 0;
-      width: clamp(280px, 85%, 400px);
+      width: 80%;
       background-color: #0b9dff;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 120%; /* OPCIONES Y BOTONES */
+      font-size: 1rem;
       font-weight: bold;
       color: #ffffff;
       transition: background 0.2s, color 0.2s;
@@ -159,18 +143,16 @@
       border: 2px solid #ffe066;
       border-radius: 8px;
       padding: 10px;
-      max-width: clamp(280px, 90%, 350px);
+      max-width: 350px;
       margin-left: auto;
       margin-right: auto;
-      display: none;
-      font-size: 120%; /* FRASE MOTIVANTE */
+      display: none; /* Oculto por defecto */
     }
     .contador_pregunta {
       color: #3b82f6;
       font-weight: bold;
       margin-bottom: 10px;
-      font-size: 170%; /* PREGUNTA GRANDE */
-      letter-spacing: 1px;
+      font-size: 1.1rem;
     }
     /* Estilo para el tutorial en dos columnas */
     .tutorial_fila {
@@ -186,8 +168,8 @@
       border: 2px solid #ffe066;
       border-radius: 14px;
       box-shadow: 0 2px 8px #ffe06644;
-      padding: 33px;
-      flex: 1 1;
+      padding: 2px 33px;
+      flex: 1 1 ;
       min-width: 315px;
       min-height: 215px;
       max-width: 520px;
@@ -196,10 +178,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 110%; /* TEXTO DEL TUTORIAL */
     }
     .tutorial_texto {
       text-align: left;
+      font-size: 1rem;
       color: #1e293b;
     }
     .tutorial_video {
@@ -208,18 +190,20 @@
       align-items: center;
     }
     .tutorial_video video {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
+      border-radius: 10px;
+      border: 2px solid #3b82f6;
+      background: #e3f6fd;
+      width: 118%;
+      height: 100%;
       object-fit: cover;
     }
     @media (max-width: 700px) {
       .tutorial_fila {
         flex-direction: column;
-        gap: clamp(8px, 2vw, 10px);
+        gap: 10px;
       }
       .tutorial_cuadro {
-        margin-bottom: clamp(6px, 2vw, 10px);
+        margin-bottom: 10px;
       }
     }
   </style>
@@ -230,17 +214,6 @@
   <div id="pagina_inicio" class="caja_pagina mostrar">
     <!-- Logo SVG incrustado y animado -->
     <svg class="logo_svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-      <style>
-        @font-face {
-          font-family: 'Rubik Puddles';
-          src: url(data:font/woff2;base64,d09GMgABAAAAAAWwABAAAAAA...) format('woff2');
-          font-weight: normal;
-          font-style: normal;
-        }
-        #logo text, #logo tspan {
-          font-family: 'Rubik Puddles', cursive !important;
-        }
-      </style>
       <g id="logo">
         <rect x="128.335" y="143.246" width="233.473" height="226.774" style="stroke-width: 11px; stroke: rgb(0, 0, 0);" rx="25.403" ry="25.403" id="rompecabezaslogo"/>
         <g id="romperojo" class="rompepieza romperojo">
@@ -357,14 +330,14 @@
         </filter>
       </defs>
     </svg>
-    <h1>Bienvenido a partes que cuentan</h1>
+    <h1>Bienvenido al juego de fracciones</h1>
     <div class="input_nombre_con_manitos">
       <span class="manito_izq" title="Escribe tu nombre">👉</span>
       <input id="input_nombre" class="input_nombre" type="text" placeholder="Escribe tu nombre Para iniciar">
       <span class="manito_der" title="Escribe tu nombre">👈</span>
     </div>
-    <p>Aquí puedes aprender tanto como jugar con fracciones</p>
-    <button id="boton_ir_menu" class="boton" disabled style="background-color: #bdbdbd; color: #666;">ESCRIBE TU NOMBRE</button>
+    <p>Aquí puedes aprender y jugar con fracciones</p>
+    <button id="boton_ir_menu" class="boton" disabled>Ir al menú principal</button>
   </div>
 
   <!-- Esta caja es el menú principal -->
@@ -402,8 +375,6 @@
         </video>
       </div>
     </div>
-    <!-- NUEVA CAJA AMARILLA DEBAJO DEL VIDEO -->
-    <!-- (ELIMINADA PORQUE ENTORPECE EL TUTORIAL) -->
     <button id="boton_volver_menu" class="boton">Volver al menú</button>
   </div>
 
@@ -553,14 +524,10 @@
     $("#input_nombre").on("input", function() {
       if ($(this).val().trim().length > 0) {
         $("#boton_ir_menu").prop("disabled", false)
-        $("#boton_ir_menu").text("IR AL MENÚ PRINCIPAL")
-        $("#boton_ir_menu").css({"background-color": "#0b9dff", "color": "#fff"})
       } else {
         $("#boton_ir_menu").prop("disabled", true)
-        $("#boton_ir_menu").text("ESCRIBE TU NOMBRE")
-        $("#boton_ir_menu").css({"background-color": "#bdbdbd", "color": "#666"})
       }
-    })
+    });
 
     // =============================
     // SECCIÓN: Generación de preguntas
