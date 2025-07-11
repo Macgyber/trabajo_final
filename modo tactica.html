@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <meta name="description" content="Juego educativo de fracciones para aprender y divertirse.">
+  <title>Juego de Fracciones</title>
+  <link rel="shortcut icon" href="logofraccionario.svg" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Frijole&display=swap" rel="stylesheet">
+  <!-- ESTA ES LA PARTE DEL ESTILO -->
+  <style>
+    /* Esta parte controla el estilo de las cajas y botones */
+    body {
+      background:linear-gradient(180deg,#FF5959 ,#FFAD5A ,#4F9DA6 ,#1A084125 ) no-repeat;
+      font-family: 'Frijole', cursive;
+      font-size: 100%; /* TAMAÑO BASE: 100% = 16px por defecto */
+      margin: 0;
+      padding: 0;
+      min-height: 95dvh;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .titulo_principal {
+      font-size: 220%; /* TÍTULOS GRANDES */
+    }
+    .caja_pagina {
+      position: relative;
+      display: none;
+      text-align: center;      
+      margin: 20px auto;
+      max-width: 640px;
+      background: transparent;
+      box-sizing: border-box;
+    }
+    .boton {
+      padding: 12px 24px;
+      margin: 8px;
+      background-color: #0b9dff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 120%; /* OPCIONES Y BOTONES */
+      font-family: 'Frijole', cursive;
+      font-weight: bold;
+      color: #ffffff;
+      transition: background 0.2s, color 0.2s;
+    }
+    .boton:hover {
+      background-color: #087bc7;
+      color: hsl(0, 0%, 58%);
+      scale: 1.05;
+    }
+    .logo_animado {
+      display: block; 
+      margin: 0 auto 16px auto;
+      width: 128px;
+      animation: giroLogo 0.5s infinite alternate;
+      position: relative;
+      transition: filter 0.3s;
+      z-index: 1;
+    }
+    /* Efecto rompecabezas al hacer hover */
+    .logo_animado.puzzle {
+      animation: none;
+    }
+    .logo_animado.puzzle svg {
+      filter: url(#puzzleEffect);
+    }
+    .logo_animado.puzzle {
+      filter: drop-shadow(8px 0 0 #fff) drop-shadow(-8px 0 0 #fff) drop-shadow(0 8px 0 #fff) drop-shadow(0 -8px 0 #fff);
+      transform: scale(1.1) rotate(2deg);
+    }
+    /* Animación de piezas del logo al hacer hover */
+    .logo_svg { 
+      width: clamp(150px, 25vw, 200px);
+      display: block; 
+      margin: 0 auto 16px auto; 
+      cursor: pointer; 
+      transition: filter 0.3s; 
+    }
+    .logo_svg .rompepieza { transition: transform 0.6s cubic-bezier(.68,-0.55,.27,1.55); }
+    .logo_svg:hover .romperojo { transform: translate(-18px, -18px) rotate(-10deg); }
+    .logo_svg:hover .rompeverde { transform: translate(-18px, 18px) rotate(-10deg); }
+    .logo_svg:hover .rompeazul { transform: translate(18px, -18px) rotate(10deg); }
+    .logo_svg:hover .rompeamarillo { transform: translate(18px, 18px) rotate(10deg); }
+    /* Manitos apuntando hacia el input */
+    .manito_izq { transform: rotate(20deg) scaleX(-1); animation-name: manito-move-izq; }
+    .manito_der { transform: rotate(-20deg); animation-name: manito-move-der; }
+    .input_nombre {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #000000;
+      text-align: center;
+      margin-bottom: 12px;
+      width: clamp(250px, 80%, 400px);
+      font-size: 110%; /* INPUT */
+      font-family: 'Frijole', cursive;
+      z-index: 2;
+    }
+    .input_nombre_con_manitos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .manito_izq, .manito_der {
+      font-size: clamp(2rem, 8vw, 4rem);
+      user-select: none;
+      animation: manito-move 0.8s infinite alternate;
+      display: inline-block;
+    }
+    .manito_izq {
+      animation-name: manito-move-izq;
+      margin-right: 2px;
+    }
+    .manito_der {
+      animation-name: manito-move-der;
+      margin-left: 2px;
+    }
+    @keyframes manito-move-izq {
+      0% { transform: translateX(0) rotate(-20deg); }
+      100% { transform: translateX(8px) rotate(-10deg); }
+    }
+    @keyframes manito-move-der {
+      0% { transform: translateX(0) rotate(20deg); }
+      100% { transform: translateX(-8px) rotate(10deg); }
+    }
+    .opciones_respuesta {
+      margin: 18px 0;
+    }
+    .opcion {
+      display: block;
+      margin: 8px auto;
+      padding: 10px 0;
+      width: clamp(280px, 85%, 400px);
+      background-color: #0b9dff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 120%; /* OPCIONES Y BOTONES */
+      font-weight: bold;
+      color: #ffffff;
+      transition: background 0.2s, color 0.2s;
+    }
+    .opcion:hover {
+     background-color: #087bc7;
+      color: hsl(0, 0%, 58%);
+      scale: 1.05;
+    }
+    .mostrar {
+      display: block;
+    }
+    .frase_motivante {
+      color: #f59e42;
+      font-weight: bold;
+      margin: 18px 0 0 0;
+      background: #fffbe6;
+      border: 2px solid #ffe066;
+      border-radius: 8px;
+      padding: 10px;
+      max-width: clamp(280px, 90%, 350px);
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+      font-size: 120%; /* FRASE MOTIVANTE */
+    }
+    .contador_pregunta {
+      color: #3b82f6;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 170%; /* PREGUNTA GRANDE */
+      letter-spacing: 1px;
+    }
+    /* Estilo para el tutorial en dos columnas */
+    .tutorial_fila {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+    .tutorial_cuadro {
+      background: #fffbe6;
+      border: 2px solid #ffe066;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px #ffe06644;
+      padding: 33px;
+      flex: 1 1;
+      min-width: 315px;
+      min-height: 215px;
+      max-width: 520px;
+      margin: 0 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 110%; /* TEXTO DEL TUTORIAL */
+    }
+    .tutorial_texto {
+      text-align: left;
+      color: #1e293b;
+    }
+    .tutorial_video {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .tutorial_video video {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      object-fit: cover;
+    }
+    @media (max-width: 700px) {
+      .tutorial_fila {
+        flex-direction: column;
+        gap: clamp(8px, 2vw, 10px);
+      }
+      .tutorial_cuadro {
+        margin-bottom: clamp(6px, 2vw, 10px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Esta caja es la página de inicio -->
+  <div id="pagina_inicio" class="caja_pagina mostrar">
+    <!-- Logo SVG incrustado y animado -->
+    <svg class="logo_svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        @font-face {
+          font-family: 'Rubik Puddles';
+          src: url(data:font/woff2;base64,d09GMgABAAAAAAWwABAAAAAA...) format('woff2');
+          font-weight: normal;
+          font-style: normal;
+        }
+        #logo text, #logo tspan {
+          font-family: 'Rubik Puddles', cursive !important;
+        }
+      </style>
+      <g id="logo">
+        <rect x="128.335" y="143.246" width="233.473" height="226.774" style="stroke-width: 11px; stroke: rgb(0, 0, 0);" rx="25.403" ry="25.403" id="rompecabezaslogo"/>
+        <g id="romperojo" class="rompepieza romperojo">
+          <path style="stroke: rgb(134, 1, 18); fill: rgb(255, 86, 86); filter: url(#inner-shadow-filter-0);" d="M 238.385 147.185 L 238.324 180.668 C 238.347 188.814 242.399 190.61 250.479 186.056 C 255.11 183.446 260.653 183.727 265.945 188.546 C 278.342 199.835 260.166 221.836 244.73 207.543 C 243.758 206.643 242.437 206.739 240.767 207.829 C 239.572 208.609 238.701 209.739 238.154 211.22 C 238.154 211.22 238.131 224.098 238.084 249.854 C 238.084 249.854 228.032 249.968 207.929 250.197 C 207.929 250.197 208.509 248.768 209.669 245.91 C 213.005 237.692 209.771 229.433 199.969 221.134 C 194.258 216.299 186.877 215.215 177.826 217.881 C 172.822 219.355 168.721 222.577 165.521 227.549 C 161.451 233.873 160.752 241.361 163.424 250.013 C 163.424 250.013 153.605 249.951 133.968 249.827 C 133.968 249.827 133.983 221.82 134.012 165.805 C 134.014 161.699 135.817 158.01 139.421 154.738 C 142.939 151.544 147.196 149.432 152.192 148.403 C 152.192 148.403 180.923 147.997 238.385 147.185 Z" id="rojo"/>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre;" transform="matrix(2.551356, 0, 0, 2.785255, -224.370865, -308.125275)" x="143.318" y="187.53" id="letrap">P</text>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#gaussian-blur-filter-5);" transform="matrix(2.551356, 0, 0, 2.785255, -223.532303, -313.940521)" x="143.318" y="187.53" id="sombrap">P</text>
+        </g>
+        <g id="rompeverde" class="rompepieza rompeverde">
+          <path style="stroke: rgb(33, 137, 98); fill: rgb(0, 255, 176); filter: url(#inner-shadow-filter-2);" d="M 133.68 348.509 L 133.736 260.414 L 165.278 260.6 C 175.043 260.36 178.615 256.826 175.994 249.997 C 173.451 243.371 172.642 238.895 173.568 236.57 C 175.48 231.768 179.738 228.837 186.34 227.777 C 189.524 227.266 192.62 228.168 195.628 230.482 C 200.427 234.173 201.136 240.186 197.756 248.519 C 196.913 250.598 196.601 252.82 196.821 255.185 C 197.062 257.777 199.108 259.387 202.959 260.014 C 202.959 260.014 213.854 259.927 237.447 259.858 C 237.447 259.878 238.403 290.094 238.055 290.404 C 238.055 290.404 236.23 289.734 232.579 288.395 C 232.579 288.395 229.59 288.743 223.611 289.438 C 218.053 290.084 213.454 293.271 209.814 298.998 C 204.761 306.948 204.835 316.369 210.037 327.259 C 211.466 330.251 215.251 332.763 221.393 334.795 C 226.736 336.563 232.323 335.889 238.154 332.773 C 238.154 332.773 238.004 343.192 238.344 364.833 C 238.344 364.833 209.083 365.051 149.92 364.685 C 149.92 364.685 147.083 363.392 141.408 360.807 C 137.017 356.712 134.441 352.613 133.68 348.509 Z" id="verde"/>
+          <rect x="143.419" y="301.417" width="59.101" height="19.469" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-1);" id="resta"/>
+          <rect x="142.859" y="301.368" width="59.101" height="19.469" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); stroke-width: 1; filter: url(#filter-1) url(#gaussian-blur-filter-2);" id="sombraresta"/>
+        </g>
+        <g id="rompeazul" class="rompepieza rompeazul">
+          <path style="stroke: rgb(12, 126, 142); fill: rgb(58, 228, 255); filter: url(#inner-shadow-filter-1);" d="M 248.546 148.648 L 249.022 177.103 C 258.36 172.46 266.983 174.419 274.892 182.979 C 277.65 185.964 279.395 189.636 280.127 193.992 C 281.435 201.777 279.041 209.299 272.945 216.558 C 267.78 222.708 259.289 224.061 248.64 220.724 C 248.64 220.724 249.088 230.834 248.815 250.947 C 248.815 250.947 261.022 250.943 285.437 250.936 C 287.941 250.935 289.729 252.687 290.803 256.192 C 291.059 257.027 290.32 259.116 288.586 262.457 C 286.365 266.736 286.331 271.557 288.484 276.92 C 290.63 282.265 296.045 284.225 304.73 282.802 C 309.989 281.94 313.487 277.921 315.225 270.743 C 316.165 266.862 314.912 263.07 311.467 259.367 C 310.599 258.434 310.36 257.181 310.751 255.61 C 311.714 251.74 315.276 249.947 321.438 250.232 C 321.438 250.232 333.049 250.341 356.27 250.56 C 356.27 250.56 356.304 223.066 356.373 168.079 C 356.383 160.496 351.956 154.338 343.094 149.606 C 341.888 148.962 339.753 148.661 336.688 148.703 C 336.688 148.703 307.307 148.685 248.546 148.648 Z" id="azul"/>
+          <path d="M 306.366 170.771 H 326.507 V 188.214 H 346.056 V 206.183 H 326.507 V 223.626 H 306.366 V 206.183 H 286.817 V 188.214 H 306.366 Z" bx:shape="cross 286.817 170.771 59.239 52.855 17.97 20.141 0.5 1@7ef7a671" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-0) url(#gaussian-blur-filter-1);" id="suma"/>
+          <path d="M 306.211 171.051 H 326.352 V 188.493 H 345.901 V 206.464 H 326.352 V 223.906 H 306.211 V 206.464 H 286.662 V 188.493 H 306.211 Z" bx:shape="cross 286.662 171.051 59.239 52.855 17.97 20.141 0.5 1@6c5a38c9" style="fill: rgb(255, 255, 255); stroke: rgb(255, 255, 255); filter: url(#brightness-filter-0) url(#gaussian-blur-filter-0); stroke-width: 1;" id="sombrasuma"/>
+        </g>
+        <g id="rompeamarillo" class="rompepieza rompeamarillo">
+          <path style="stroke: rgb(158, 142, 0); fill: rgb(255, 233, 103); filter: url(#inner-shadow-filter-3);" d="M 276.463 260.432 L 248.074 260.045 L 247.663 298.523 C 243.6 303.335 238.687 303.612 232.923 299.354 C 232.462 299.013 230.727 298.935 227.718 299.118 C 223.667 299.364 220.284 301.607 217.569 305.846 C 214.872 310.056 215.24 315.042 218.673 320.805 C 221.259 325.145 226.143 326.437 233.326 324.679 C 235.294 324.197 237.156 323.318 238.914 322.041 C 240.388 320.97 242.205 320.835 244.364 321.635 C 248.015 322.988 249.29 326.727 248.188 332.852 C 248.188 332.852 247.82 342.967 248.436 364.444 C 248.436 364.444 278.136 364.527 337.537 364.693 C 338.634 364.696 341.453 363.825 345.994 362.08 C 351.304 360.04 354.476 355.318 355.511 347.916 C 355.511 347.916 355.482 318.8 355.424 260.568 C 355.424 260.568 344.467 260.668 322.552 260.869 C 322.552 260.869 323.163 262.446 324.386 265.599 C 324.386 265.599 324.317 267.994 324.18 272.785 C 323.925 281.703 318.478 289.79 306.499 292.878 C 298.402 294.966 289.374 292.989 280.064 285.194 C 273.621 279.8 272.714 271.214 276.463 260.432 Z" id="amarillo"/>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#brightness-filter-2) url(#gaussian-blur-filter-4);" transform="matrix(2.831103, 0, 0, 2.849609, -129.525803, -176.712234)" x="143.318" y="187.53" id="letrac">C</text>
+          <text style="font-family: 'Rubik Puddles'; font-size: 28px; white-space: pre; filter: url(#brightness-filter-2) url(#gaussian-blur-filter-3);" transform="matrix(2.831103, 0, 0, 2.849609, -133.741745, -177.835114)" x="143.318" y="187.53" id="sombrac">C</text>
+        </g>
+      </g>
+      <defs>
+        <filter id="brightness-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="2"/>
+            <feFuncG type="linear" slope="2"/>
+            <feFuncB type="linear" slope="2"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="brightness-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="2"/>
+            <feFuncG type="linear" slope="2"/>
+            <feFuncB type="linear" slope="2"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="brightness-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="1.95"/>
+            <feFuncG type="linear" slope="1.95"/>
+            <feFuncB type="linear" slope="1.95"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="gaussian-blur-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="10 10" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0 0" edgeMode="none"/>
+        </filter>
+        <filter id="filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="2"/>
+            <feFuncG type="linear" slope="2"/>
+            <feFuncB type="linear" slope="2"/>
+          </feComponentTransfer>
+        </filter>
+        <filter id="gaussian-blur-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5.8 5.8" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0.7 0.7" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-4" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0 0" edgeMode="none"/>
+        </filter>
+        <filter id="gaussian-blur-filter-5" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="0.9 0.9" edgeMode="none"/>
+        </filter>
+        <filter id="inner-shadow-filter-0" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#ff0000b3" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-1" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="10"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#006fffb3" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-2" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="11"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1.2"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#38f300" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+        <filter id="inner-shadow-filter-3" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+          <feOffset dx="0" dy="0"/>
+          <feGaussianBlur stdDeviation="16"/>
+          <feComposite operator="out" in="SourceGraphic"/>
+          <feComponentTransfer result="choke">
+            <feFuncA type="linear" slope="1.14"/>
+          </feComponentTransfer>
+          <feFlood flood-color="#ff7900" result="color"/>
+          <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+          <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+      </defs>
+    </svg>
+    <h1>Bienvenido a partes que cuentan</h1>
+    <div class="input_nombre_con_manitos">
+      <span class="manito_izq" title="Escribe tu nombre">👉</span>
+      <input id="input_nombre" class="input_nombre" type="text" placeholder="Escribe tu nombre Para iniciar">
+      <span class="manito_der" title="Escribe tu nombre">👈</span>
+    </div>
+    <p>Aquí puedes aprender tanto como jugar con fracciones</p>
+    <button id="boton_ir_menu" class="boton" disabled style="background-color: #bdbdbd; color: #666;">ESCRIBE TU NOMBRE</button>
+  </div>
+
+  <!-- Esta caja es el menú principal -->
+  <div id="menu_principal" class="caja_pagina">
+    <h2>Menú Principal</h2>
+    <button id="boton_ir_tutorial" class="boton">Tutorial</button>
+    <button id="boton_ir_juego" class="boton">Jugar</button>
+    <button id="boton_ver_logros" class="boton" style="background-color:#ffd700;">🏆 Ver Logros</button>
+    <button id="boton_salir" class="boton">Salir</button>
+  </div>
+
+  <!-- Esta caja es el tutorial -->
+  <div id="pagina_tutorial" class="caja_pagina">
+    <h2>Tutorial</h2>
+    <div class="tutorial_fila">
+      <!-- Explicación de la mecánica del juego en un cuadro -->
+      <div class="tutorial_cuadro">
+        <div class="tutorial_texto">
+          <h3 style="color:#3b82f6; text-align:center;">¿Cómo se juega?</h3>
+          <ul style="text-align:left; font-size:1rem;">
+
+            <!-- descripcion de como se juega tutorial -->
+            <li>Lee la pregunta sobre fracciones que aparece en pantalla.</li>
+            <li>Elige la respuesta correcta entre las 4 opciones disponibles.</li>
+            <li>Si aciertas, sumas puntos y escuchas un sonido de acierto.</li>
+            <li>Si te equivocas, escuchas un sonido de error y puedes intentarlo en la siguiente.</li>
+            <li>El juego tiene 3 niveles de dificultad: fácil, intermedio y difícil.</li>
+            <li>Al terminar, verás tu puntaje, tiempo, aciertos y errores, junto con un mensaje motivador.</li>
+            <li>¡Juega, aprende y diviértete con las fracciones!</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Video tutorial -->
+      <div class="tutorial_cuadro tutorial_video">
+        <video width="220" controls>
+          <source src="canciondeltutorial.mp4" type="video/mp4">
+          Tu navegador no soporta el video.
+        </video>
+      </div>
+    </div>
+       <button id="boton_volver_menu" class="boton">Volver al Juego</button>
+  </div>
+
+  <!-- Esta caja es el juego -->
+  <div id="pagina_juego" class="caja_pagina">
+    <h2>Juego</h2>
+    <div class="contador_pregunta" id="contador_pregunta"></div>
+    <div id="caja_ejercicio"></div>
+    <div id="opciones_respuesta" class="opciones_respuesta"></div>
+    <p id="caja_puntos">Puntos: 0</p>
+    <p id="caja_reloj">Tiempo: 00:00</p>
+    <button id="boton_terminar" class="boton">Te Rindez?</button>
+    <div id="frase_motivante" class="frase_motivante"></div>
+    
+    <!-- ============================= -->
+    <!-- ELEMENTOS HTML PARA RETOS DEL PROFESOR -->
+    <!-- ============================= -->
+    
+    <!-- RETO 1: TEMPORIZADOR POR PREGUNTA -->
+    <div id="temporizador_pregunta" style="font-size:1.5rem; font-weight:bold; color:green; margin:10px;"></div>
+    
+    <!-- RETO 2: BOTÓN PARA SELECCIONAR NIVEL -->
+    <button id="boton_seleccionar_nivel" class="boton" style="margin:10px;">Seleccionar Nivel</button>
+    
+    <!-- RETO 3: SISTEMA DE VIDAS -->
+    <p id="caja_vidas" style="font-size:1.2rem; color:red; margin:10px;">Vidas: ❤️❤️❤️</p>
+    
+    <!-- RETO 5: BOTÓN PARA MODO PRÁCTICA -->
+    <button id="boton_modo_practica" class="boton" style="background-color:#ff9800; margin:10px;">Modo Práctica</button>
+    
+    <!-- RETO 6: BOTÓN PARA VER HISTORIAL -->
+    <button id="boton_ver_historial" class="boton" style="background-color:#9c27b0; margin:10px;">Ver Historial</button>
+    
+    <!-- RETO 7: CAJA PARA MOSTRAR LOGROS -->
+    <div id="caja_logros" style="margin:10px;"></div>
+    
+    <!-- RETO 8: BOTÓN DE PISTA -->
+    <button id="boton_pista" class="boton" style="background-color:#4caf50; margin:10px;">💡 Pista</button>
+    <div id="caja_pista" style="background:#e8f5e8; border:2px solid #4caf50; border-radius:8px; padding:10px; margin:10px; display:none;"></div>
+    
+    <!-- RETO 9: CONTADOR DE INTENTOS -->
+    <p id="caja_intentos" style="font-size:1rem; color:#666; margin:10px;">Intentos: 0/3</p>
+    
+    <!-- RETO 10: BOTÓN PARA ESTADÍSTICAS -->
+    <button id="boton_estadisticas" class="boton" style="background-color:#607d8b; margin:10px;">📊 Estadísticas</button>
+    <div id="caja_estadisticas" style="margin:10px;"></div>
+  </div>
+
+  <!-- Esta caja es el final del juego -->
+  <div id="pagina_final" class="caja_pagina">
+    <h2>Fin del juego</h2>
+    <div id="caja_resultados_finales" style="display:flex; flex-direction:column; align-items:center;">
+      <div style="background:#fffbe6; border:2px solid #3b82f6; border-radius:12px; padding:18px 10px; margin-bottom:10px; min-width:220px; max-width:320px;">
+        <div id="caja_nombre_final" style="font-size:1.2rem; color:#3b82f6; font-weight:bold; margin-bottom:6px;"></div>
+        <div id="caja_puntaje_final" style="font-size:1.1rem; color:#1e293b; margin-bottom:4px;"></div>
+        <div id="caja_aciertos_final" style="font-size:1.1rem; color:#228b22; margin-bottom:4px;"></div>
+        <div id="caja_errores_final" style="font-size:1.1rem; color:#e63946; margin-bottom:4px;"></div>
+      </div>
+      <div id="caja_frase_final" class="frase_motivante" style="margin-top:0;"></div>
+      <div id="caja_tiempo_final" style="margin-top:10px; color:#000205; font-weight:bold;"></div>
+    </div>
+    <button id="boton_volver_menu_final" class="boton">Revancha</button>
+  </div>
+  
+ <!-- ESTA ES LA PARTE DEL JAVASCRIPT -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="jquery-3.7.1.min.js"></script>
+
+  <!-- Sonidos -->
+  <audio id="sonido_correcto" src="correcto.mp3"></audio>
+  <audio id="sonido_incorrecto" src="incorrecto.mp3"></audio>
+  <audio id="sonido_click" src="clickenunboton.mp3"></audio>
+
+  <!-- Música de ambientación -->
+  <audio id="musica_ambiente" src="musicadeambientacion3.mp3" loop></audio>
+
+  <script>
+    // =============================
+    // SECCIÓN: Variables globales
+    // =============================
+    let puntos = 0
+    let nivel = 1
+    let ejercicio_actual = {}
+    let preguntas = []
+    let pregunta_actual = 0
+    let nombre_usuario = ""
+    let dificultad = "facil"
+    let frases_motivantes = [
+      "¡Muy bien! Ahora subimos la dificultad.",
+      "¡Excelente! Prepárate para el siguiente reto.",
+      "¡Súper! Ahora viene lo más difícil.",
+      "¡Eres un genio de las fracciones!"
+    ]
+    // Variables para el reloj
+    let reloj_intervalo = null
+    let segundos_totales = 0
+    // Variables para aciertos y errores
+    let aciertos = 0
+    let errores = 0
+
+    // =============================
+    // SECCIÓN: FUNCIONES EXTRA PARA RETOS DEL PROFESOR
+    // =============================
+    
+    // RETO 1: LÍMITE DE TIEMPO POR PREGUNTA
+    let tiempo_limite_por_pregunta = 30 // SEGUNDOS POR PREGUNTA
+    let temporizador_pregunta = null
+    let tiempo_restante = tiempo_limite_por_pregunta
+    
+    // RETO 2: NIVELES DE DIFICULTAD SELECCIONABLES
+    let nivel_seleccionado = "facil" // OPCIONES: "facil", "intermedio", "dificil"
+    
+    // RETO 3: SISTEMA DE VIDAS
+    let vidas = 3
+    let vidas_perdidas = 0
+    
+    // RETO 4: PUNTOS BONUS POR VELOCIDAD
+    let tiempo_respuesta = 0
+    let tiempo_inicio_pregunta = 0
+    
+    // RETO 5: MODO PRÁCTICA (SIN PUNTOS)
+    let modo_practica = false
+    
+    // RETO 6: HISTORIAL DE PARTIDAS
+    let historial_partidas = []
+    
+    // RETO 7: LOGROS Y MEDALLAS
+    let logros_desbloqueados = []
+    let medallas = {
+      "perfecto": { nombre: "¡Perfecto!", descripcion: "15 aciertos sin errores", desbloqueado: false },
+      "rapido": { nombre: "¡Veloz!", descripcion: "Completar en menos de 2 minutos", desbloqueado: false },
+      "experto": { nombre: "¡Experto!", descripcion: "Completar nivel difícil", desbloqueado: false }
+    }
+
+    // =============================
+    // SECCIÓN: Sonidos
+    // =============================
+    function sonarCorrecto() {
+      $("#sonido_correcto")[0].currentTime = 0
+      $("#sonido_correcto")[0].play()
+    }
+    function sonarIncorrecto() {
+      $("#sonido_incorrecto")[0].currentTime = 0
+      $("#sonido_incorrecto")[0].play()
+    }
+    function sonarClick() {
+      $("#sonido_click")[0].currentTime = 0
+      $("#sonido_click")[0].play()
+    }
+
+    // =============================
+    // SECCIÓN: Navegación entre cajas
+    // =============================
+    function mostrarCaja(caja_id) {
+      $(".caja_pagina").removeClass("mostrar")
+      $("#" + caja_id).addClass("mostrar")
+    }
+
+    // Sonido en todos los botones
+    $(document).on("click", ".boton", function() {
+      sonarClick()
+    });
+
+    // =============================
+    // SECCIÓN: Eventos de botones
+    // =============================
+    $("#boton_ir_menu").click(function() {
+      nombre_usuario = $("#input_nombre").val()
+      mostrarCaja("menu_principal")
+      reproducirMusica()
+    });
+    $("#boton_ir_tutorial").click(function() {
+      mostrarCaja("pagina_tutorial")
+      pausarMusica()
+    });
+    $("#boton_ir_juego").click(function() {
+      iniciarJuego()
+      mostrarCaja("pagina_juego")
+      reproducirMusica()
+    });
+    $("#boton_volver_menu").click(function() {
+      mostrarCaja("menu_principal")
+      reproducirMusica()
+    });
+    $("#boton_volver_menu_final").click(function() {
+      mostrarCaja("menu_principal")
+      reproducirMusica()
+    });
+    $("#boton_salir").click(function() {
+      alert("Gracias por jugar")
+      mostrarCaja("pagina_inicio")
+      reproducirMusica()
+    });
+    $("#boton_terminar").click(function() {
+      mostrarFinal()
+    });
+
+    // =============================
+    // SECCIÓN: Eventos de los nuevos botones
+    // =============================
+    
+    // RETO 2: BOTÓN SELECCIONAR NIVEL
+    $("#boton_seleccionar_nivel").click(function() {
+      mostrarSelectorNivel()
+    });
+    
+    // RETO 5: BOTÓN MODO PRÁCTICA
+    $("#boton_modo_practica").click(function() {
+      if (modo_practica) {
+        desactivarModoPractica()
+        $(this).text("Modo Práctica")
+        $(this).css("background-color", "#ff9800")
+      } else {
+        activarModoPractica()
+        $(this).text("Modo Normal")
+        $(this).css("background-color", "#4caf50")
+      }
+    });
+    
+    // RETO 6: BOTÓN VER HISTORIAL
+    $("#boton_ver_historial").click(function() {
+      cargarHistorial()
+      let historialHtml = "<h3>📋 Historial de Partidas</h3>"
+      historial_partidas.forEach(function(partida, index) {
+        historialHtml += `
+          <div style="background:#f5f5f5; border:1px solid #ddd; border-radius:8px; padding:10px; margin:5px;">
+            <strong>${partida.nombre}</strong> - ${partida.fecha}<br>
+            Puntaje: ${partida.puntaje} | Aciertos: ${partida.aciertos} | Errores: ${partida.errores}<br>
+            Tiempo: ${Math.floor(partida.tiempo/60)}:${(partida.tiempo%60).toString().padStart(2,'0')} | Nivel: ${partida.dificultad}
+          </div>
+        `
+      })
+      $("#caja_estadisticas").html(historialHtml)
+    });
+    
+    // RETO 7: BOTÓN VER LOGROS
+    $("#boton_ver_logros").click(function() {
+      verificarLogros()
+      mostrarLogros()
+    });
+    
+    // RETO 8: BOTÓN PISTA
+    $("#boton_pista").click(function() {
+      mostrarPista()
+    });
+    
+    // RETO 10: BOTÓN ESTADÍSTICAS
+    $("#boton_estadisticas").click(function() {
+      mostrarEstadisticas()
+    });
+
+    // =============================
+    // SECCIÓN: Efecto rompecabezas en el logo
+    // =============================
+    // Al hacer hover en el logo, se "divide" en pedacitos (efecto visual)
+    $("#logo_juego").hover(
+      function() {
+        $(this).addClass("puzzle")
+      },
+      function() {
+        $(this).removeClass("puzzle")
+      }
+    );
+
+    // =============================
+    // SECCIÓN: Activar botón solo si hay nombre
+    // =============================
+    $("#input_nombre").on("input", function() {
+      if ($(this).val().trim().length > 0) {
+        $("#boton_ir_menu").prop("disabled", false)
+        $("#boton_ir_menu").text("COMENZAR JUEGO")
+        $("#boton_ir_menu").css({"background-color": "#0b9dff", "color": "#fff"})
+      } else {
+        $("#boton_ir_menu").prop("disabled", true)
+        $("#boton_ir_menu").text("ESCRIBE TU NOMBRE")
+        $("#boton_ir_menu").css({"background-color": "#bdbdbd", "color": "#666"})
+      }
+    })
+
+    // =============================
+    // SECCIÓN: Generación de preguntas
+    // =============================
+    function iniciarJuego() {
+      puntos = 0
+      nivel = 1
+      pregunta_actual = 0
+      dificultad = "facil"
+      preguntas = generarPreguntasPorDificultad(dificultad)
+      mostrarPregunta()
+      $("#caja_puntos").text("Puntos: 0")
+      $("#frase_motivante").text("").hide()
+      // Iniciar el reloj
+      segundos_totales = 0
+      actualizarReloj()
+      if (reloj_intervalo) { clearInterval(reloj_intervalo) }
+      reloj_intervalo = setInterval(function() {
+        segundos_totales++
+        actualizarReloj()
+      }, 1000)
+      aciertos = 0
+      errores = 0
+      
+      // INICIALIZAR NUEVAS FUNCIONALIDADES
+      // RETO 1: Iniciar temporizador por pregunta
+      iniciarTemporizadorPregunta()
+      
+      // RETO 3: Mostrar vidas
+      mostrarVidas()
+      
+      // RETO 4: Iniciar tiempo de respuesta
+      tiempo_inicio_pregunta = Date.now()
+      
+      // RETO 5: Resetear modo práctica
+      modo_practica = false
+      $("#boton_modo_practica").text("Modo Práctica")
+      $("#boton_modo_practica").css("background-color", "#ff9800")
+      
+      // RETO 9: Resetear intentos
+      intentos_por_pregunta = 0
+      $("#caja_intentos").text("Intentos: 0/3")
+    }
+
+    function generarPreguntasPorDificultad(dif) {
+      let arr = []
+      if (dif === "facil") {
+        arr = [
+          { texto: "¿Cuál es un medio?", opciones: ["1/2", "1/3", "2/3", "1/4"], correcta: 0 },
+          { texto: "¿Cuál es un tercio?", opciones: ["1/4", "1/2", "1/3", "3/4"], correcta: 2 },
+          { texto: "¿Cuál es dos tercios?", opciones: ["2/3", "1/2", "1/3", "3/2"], correcta: 0 },
+          { texto: "¿Cuál es tres cuartos?", opciones: ["3/4", "1/3", "1/2", "2/3"], correcta: 0 },
+          { texto: "¿Cuál es un cuarto?", opciones: ["1/4", "1/2", "3/4", "2/4"], correcta: 0 }
+        ]
+      } else if (dif === "intermedio") {
+        arr = [
+          { texto: "¿Cuánto es 1/2 + 1/2?", opciones: ["1", "2/2", "1/4", "2"], correcta: 0 },
+          { texto: "¿Cuánto es 1/4 + 1/4?", opciones: ["1/2", "2/4", "1/4", "1"], correcta: 0 },
+          { texto: "¿Cuánto es 2/3 - 1/3?", opciones: ["1/3", "1/2", "2/3", "3/3"], correcta: 0 },
+          { texto: "¿Cuánto es 3/4 - 1/4?", opciones: ["2/4", "1/2", "3/4", "1/4"], correcta: 1 },
+          { texto: "¿Cuánto es 1/2 + 1/4?", opciones: ["3/4", "2/4", "1/2", "1/4"], correcta: 0 }
+        ]
+      } else if (dif === "dificil") {
+        arr = [
+          { texto: "¿Cuánto es 1/2 × 1/2?", opciones: ["1/4", "1/2", "1", "2/2"], correcta: 0 },
+          { texto: "¿Cuánto es 2/3 × 3/4?", opciones: ["1/2", "6/12", "1/4", "2/7"], correcta: 0 },
+          { texto: "¿Cuánto es 1/2 ÷ 1/4?", opciones: ["2", "1/2", "1/4", "4"], correcta: 0 },
+          { texto: "¿Cuánto es 3/4 ÷ 1/2?", opciones: ["1.5", "3/2", "1/2", "2"], correcta: 1 },
+          { texto: "¿Cuánto es 2/3 × 3/2?", opciones: ["1", "2/3", "3/2", "2"], correcta: 0 }
+        ]
+      }
+      return arr
+    }
+
+    function mostrarPregunta() {
+      ejercicio_actual = preguntas[pregunta_actual]
+      // Mezclar opciones y actualizar el índice de la correcta
+      let opciones = [...ejercicio_actual.opciones]
+      let correcta = ejercicio_actual.correcta
+      // Algoritmo de Fisher-Yates para mezclar
+      for (let i = opciones.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        // Intercambiar opciones
+        let temp = opciones[i]
+        opciones[i] = opciones[j]
+        opciones[j] = temp
+        // Si intercambiamos la correcta, actualizamos el índice
+        if (i === correcta) correcta = j
+        else if (j === correcta) correcta = i
+      }
+      ejercicio_actual.opciones_mezcladas = opciones
+      ejercicio_actual.correcta_mezclada = correcta
+      // Mostrar el contador de preguntas
+      let numPregunta = pregunta_actual + 1
+      let totalPreguntas = 5
+      if (dificultad === "intermedio") numPregunta += 5
+      if (dificultad === "dificil") numPregunta += 10
+      $("#contador_pregunta").text(`Pregunta ${numPregunta} de 15`)
+      $("#caja_ejercicio").text(ejercicio_actual.texto)
+      let opcionesHtml = ""
+      ejercicio_actual.opciones_mezcladas.forEach(function(op, idx) {
+        opcionesHtml += `<button class='opcion' data-idx='${idx}'>${op}</button>`
+      })
+      $("#opciones_respuesta").html(opcionesHtml)
+    }
+
+    // =============================
+    // SECCIÓN: Responder preguntas
+    // =============================
+    $(document).on("click", ".opcion", function() {
+      let idx = parseInt($(this).attr("data-idx"))
+      
+      // RETO 4: Calcular puntos bonus por velocidad
+      let bonus = calcularPuntosBonus()
+      
+      if (idx === ejercicio_actual.correcta_mezclada) {
+        // RETO 5: En modo práctica no sumar puntos
+        if (!modo_practica) {
+          puntos += 10 + bonus
+        }
+        sonarCorrecto()
+        aciertos++
+      } else {
+        sonarIncorrecto()
+        errores++
+        
+        // RETO 3: Perder vida por error
+        perderVida()
+        
+        // RETO 9: Manejar intentos
+        manejarIntento()
+      }
+      
+      $("#caja_puntos").text(`Puntos: ${puntos}`)
+      pregunta_actual++
+      
+      // RETO 1: Reiniciar temporizador para nueva pregunta
+      if (temporizador_pregunta) {
+        clearInterval(temporizador_pregunta)
+      }
+      
+      // Calcular el número total de preguntas respondidas
+      let preguntasRespondidas = pregunta_actual
+      if (dificultad === "intermedio") preguntasRespondidas += 5
+      if (dificultad === "dificil") preguntasRespondidas += 10
+      
+      if (pregunta_actual % 5 === 0 && preguntasRespondidas < 15) {
+        // Cambiar dificultad y mostrar frase motivante
+        if (dificultad === "facil") {
+          dificultad = "intermedio"
+        } else if (dificultad === "intermedio") {
+          dificultad = "dificil"
+        }
+        preguntas = generarPreguntasPorDificultad(dificultad)
+        pregunta_actual = 0
+        let frase = frases_motivantes[nivel-1] || frases_motivantes[frases_motivantes.length-1]
+        $("#frase_motivante").text(`${frase} ¡Vamos, ${nombre_usuario}}!`).show()
+        nivel++
+        setTimeout(function() {
+          $("#frase_motivante").text("").hide()
+          mostrarPregunta()
+          // RETO 1: Reiniciar temporizador
+          iniciarTemporizadorPregunta()
+          // RETO 4: Reiniciar tiempo de respuesta
+          tiempo_inicio_pregunta = Date.now()
+          // RETO 9: Resetear intentos
+          intentos_por_pregunta = 0
+          $("#caja_intentos").text("Intentos: 0/3")
+        }, 2000)
+      } else if (preguntasRespondidas >= 15) {
+        // RETO 6: Guardar partida al finalizar
+        guardarPartida()
+        // RETO 7: Verificar logros
+        verificarLogros()
+        mostrarFinal()
+      } else {
+        mostrarPregunta()
+        // RETO 1: Reiniciar temporizador
+        iniciarTemporizadorPregunta()
+        // RETO 4: Reiniciar tiempo de respuesta
+        tiempo_inicio_pregunta = Date.now()
+        // RETO 9: Resetear intentos
+        intentos_por_pregunta = 0
+        $("#caja_intentos").text("Intentos: 0/3")
+      }
+    });
+
+    // =============================
+    // SECCIÓN: Reloj (cronómetro)
+    // =============================
+    function actualizarReloj() {
+      let minutos = Math.floor(segundos_totales / 60)
+      let segundos = segundos_totales % 60
+      let texto = `Tiempo: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
+      $("#caja_reloj").text(texto)
+    }
+
+    // =============================
+    // SECCIÓN: Final del juego
+    // =============================
+    function mostrarFinal() {
+      mostrarCaja("pagina_final")
+      // Centrar y mostrar resultados en cuadros de colores
+      let nombre = nombre_usuario ? nombre_usuario : "Usuario"
+      $("#caja_nombre_final").text(nombre)
+      $("#caja_puntaje_final").text(`Puntaje: ${puntos}`)
+      $("#caja_aciertos_final").text(`Aciertos: ${aciertos}`)
+      $("#caja_errores_final").text(`Errores: ${errores}`)
+      // Mensaje motivador
+      let frase = ""
+      if (aciertos === 15) {
+        frase = `¡Increíble, ${nombre}! ¡Respondiste todo ERES UN CRACK!`
+      } else if (aciertos > errores) {
+        frase = `¡Muy bien, ${nombre}! Sigue practicando para mejorar aún más.`
+      } else {
+        frase = `¡HUY CASI, ${nombre}! Puedes mejorar con más práctica.`
+      }
+      $("#caja_frase_final").text(frase).show()
+      // Detener el reloj y mostrar el tiempo final
+      if (reloj_intervalo) { clearInterval(reloj_intervalo) }
+      let minutos = Math.floor(segundos_totales / 60)
+      let segundos = segundos_totales % 60
+      let texto = `Tiempo total: ${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`
+      $("#caja_tiempo_final").text(texto)
+    }
+
+    // =============================
+    // SECCIÓN: Música de ambientación
+    // =============================
+    function reproducirMusica() {
+      let audio = $("#musica_ambiente")[0]
+      if (audio.paused) {
+        audio.volume = 0.25
+        audio.play()
+      }
+    }
+    function pausarMusica() {
+      let audio = $("#musica_ambiente")[0]
+      if (!audio.paused) audio.pause()
+    }
+    
+    // =============================
+    // SECCIÓN: FUNCIONES EXTRA PARA RETOS DEL PROFESOR
+    // =============================
+    
+    // RETO 1: LÍMITE DE TIEMPO POR PREGUNTA
+    function iniciarTemporizadorPregunta() {
+      tiempo_restante = tiempo_limite_por_pregunta
+      actualizarTemporizadorPregunta()
+      temporizador_pregunta = setInterval(function() {
+        tiempo_restante--
+        actualizarTemporizadorPregunta()
+        if (tiempo_restante <= 0) {
+          clearInterval(temporizador_pregunta)
+          // TIEMPO AGOTADO - RESPUESTA INCORRECTA
+          sonarIncorrecto()
+          errores++
+          puntos -= 5 // PENALIZACIÓN POR TIEMPO
+          $("#caja_puntos").text(`Puntos: ${puntos}`)
+          pregunta_actual++
+          mostrarPregunta()
+        }
+      }, 1000)
+    }
+    
+    function actualizarTemporizadorPregunta() {
+      let minutos = Math.floor(tiempo_restante / 60)
+      let segundos = tiempo_restante % 60
+      let color = tiempo_restante <= 10 ? "red" : tiempo_restante <= 20 ? "orange" : "green"
+      $("#temporizador_pregunta").text(`${minutos}:${segundos.toString().padStart(2, '0')}`).css("color", color)
+    }
+    
+    // RETO 2: SELECCIÓN DE NIVEL ANTES DE JUGAR
+    function mostrarSelectorNivel() {
+      let html = `
+        <div style="background:#fffbe6; border:2px solid #3b82f6; border-radius:12px; padding:20px; margin:20px;">
+          <h3 style="color:#3b82f6;">Selecciona el nivel de dificultad:</h3>
+          <button class="boton" onclick="seleccionarNivel('facil')">Fácil</button>
+          <button class="boton" onclick="seleccionarNivel('intermedio')">Intermedio</button>
+          <button class="boton" onclick="seleccionarNivel('dificil')">Difícil</button>
+        </div>
+      `
+      $("#caja_ejercicio").html(html)
+    }
+    
+    function seleccionarNivel(nivel) {
+      nivel_seleccionado = nivel
+      dificultad = nivel
+      preguntas = generarPreguntasPorDificultad(dificultad)
+      mostrarPregunta()
+    }
+    
+    // RETO 3: SISTEMA DE VIDAS
+    function mostrarVidas() {
+      let vidasHtml = ""
+      for (let i = 0; i < vidas; i++) {
+        vidasHtml += "❤️"
+      }
+      $("#caja_vidas").text(`Vidas: ${vidasHtml}`)
+    }
+    
+    function perderVida() {
+      vidas--
+      vidas_perdidas++
+      mostrarVidas()
+      if (vidas <= 0) {
+        // GAME OVER
+        mostrarFinal()
+      }
+    }
+    
+    // RETO 4: PUNTOS BONUS POR VELOCIDAD
+    function calcularPuntosBonus() {
+      let tiempo_respuesta = Date.now() - tiempo_inicio_pregunta
+      let bonus = 0
+      if (tiempo_respuesta < 5000) bonus = 5 // MENOS DE 5 SEGUNDOS
+      else if (tiempo_respuesta < 10000) bonus = 3 // MENOS DE 10 SEGUNDOS
+      else if (tiempo_respuesta < 15000) bonus = 1 // MENOS DE 15 SEGUNDOS
+      return bonus
+    }
+    
+    // RETO 5: MODO PRÁCTICA
+    function activarModoPractica() {
+      modo_practica = true
+      $("#caja_puntos").text("Modo Práctica - Sin puntos")
+      $("#caja_puntos").css("color", "#666")
+    }
+    
+    function desactivarModoPractica() {
+      modo_practica = false
+      $("#caja_puntos").css("color", "#000")
+    }
+    
+    // RETO 6: GUARDAR HISTORIAL
+    function guardarPartida() {
+      let partida = {
+        nombre: nombre_usuario,
+        fecha: new Date().toLocaleDateString(),
+        puntaje: puntos,
+        aciertos: aciertos,
+        errores: errores,
+        tiempo: segundos_totales,
+        dificultad: dificultad
+      }
+      historial_partidas.push(partida)
+      localStorage.setItem("historial_partidas", JSON.stringify(historial_partidas))
+    }
+    
+    function cargarHistorial() {
+      let historial = localStorage.getItem("historial_partidas")
+      if (historial) {
+        historial_partidas = JSON.parse(historial)
+      }
+    }
+    
+    // RETO 7: VERIFICAR LOGROS
+    function verificarLogros() {
+      // LOGRO PERFECTO
+      if (aciertos === 15 && errores === 0) {
+        medallas.perfecto.desbloqueado = true
+        logros_desbloqueados.push("perfecto")
+      }
+      
+      // LOGRO VELOZ
+      if (segundos_totales < 120) { // MENOS DE 2 MINUTOS
+        medallas.rapido.desbloqueado = true
+        logros_desbloqueados.push("rapido")
+      }
+      
+      // LOGRO EXPERTO
+      if (dificultad === "dificil" && aciertos >= 10) {
+        medallas.experto.desbloqueado = true
+        logros_desbloqueados.push("experto")
+      }
+    }
+    
+    function mostrarLogros() {
+      let logrosHtml = ""
+      for (let logro in medallas) {
+        if (medallas[logro].desbloqueado) {
+          logrosHtml += `<div style="background:#ffe066; padding:10px; margin:5px; border-radius:8px;">
+            🏆 ${medallas[logro].nombre} - ${medallas[logro].descripcion}
+          </div>`
+        }
+      }
+      $("#caja_logros").html(logrosHtml)
+    }
+    
+    // RETO 8: NUEVO BOTÓN "PISTA" (AYUDA)
+    function mostrarPista() {
+      let pista = ""
+      if (ejercicio_actual.texto.includes("medio")) {
+        pista = "💡 Pista: Un medio es la mitad de algo"
+      } else if (ejercicio_actual.texto.includes("tercio")) {
+        pista = "💡 Pista: Un tercio es una de tres partes iguales"
+      } else if (ejercicio_actual.texto.includes("cuarto")) {
+        pista = "💡 Pista: Un cuarto es una de cuatro partes iguales"
+      } else if (ejercicio_actual.texto.includes("+")) {
+        pista = "💡 Pista: Suma los numeradores si los denominadores son iguales"
+      } else if (ejercicio_actual.texto.includes("-")) {
+        pista = "💡 Pista: Resta los numeradores si los denominadores son iguales"
+      } else if (ejercicio_actual.texto.includes("×")) {
+        pista = "💡 Pista: Multiplica numerador por numerador y denominador por denominador"
+      } else if (ejercicio_actual.texto.includes("÷")) {
+        pista = "💡 Pista: Multiplica por el recíproco (voltea la segunda fracción)"
+      }
+      $("#caja_pista").text(pista).show()
+    }
+    
+    // RETO 9: MÚLTIPLES INTENTOS POR PREGUNTA
+    let intentos_por_pregunta = 0
+    let max_intentos = 3
+    
+    function manejarIntento() {
+      intentos_por_pregunta++
+      if (intentos_por_pregunta >= max_intentos) {
+        // MOSTRAR RESPUESTA CORRECTA
+        let respuestaCorrecta = ejercicio_actual.opciones[ejercicio_actual.correcta]
+        $("#caja_ejercicio").append(`<div style="color:green; font-weight:bold; margin-top:10px;">
+          Respuesta correcta: ${respuestaCorrecta}
+        </div>`)
+        setTimeout(function() {
+          pregunta_actual++
+          intentos_por_pregunta = 0
+          mostrarPregunta()
+        }, 2000)
+      }
+    }
+    
+    // RETO 10: ESTADÍSTICAS DETALLADAS
+    function mostrarEstadisticas() {
+      let porcentajeAcierto = (aciertos / (aciertos + errores)) * 100
+      let tiempoPromedio = segundos_totales / (aciertos + errores)
+      
+      let estadisticas = `
+        <div style="background:#e3f2fd; border:2px solid #2196f3; border-radius:12px; padding:15px; margin:10px;">
+          <h3>📊 Estadísticas Detalladas</h3>
+          <p>Porcentaje de acierto: ${porcentajeAcierto.toFixed(1)}%</p>
+          <p>Tiempo promedio por pregunta: ${tiempoPromedio.toFixed(1)} segundos</p>
+          <p>Preguntas por minuto: ${((aciertos + errores) / (segundos_totales / 60)).toFixed(1)}</p>
+        </div>
+      `
+      $("#caja_estadisticas").html(estadisticas)
+    }
+    
+    // Iniciar música al cargar la página principal
+    $(document).ready(function() {
+      reproducirMusica()
+      
+      // INICIALIZAR NUEVAS FUNCIONALIDADES
+      // RETO 6: Cargar historial guardado
+      cargarHistorial()
+      
+      // RETO 7: Cargar logros guardados
+      let logrosGuardados = localStorage.getItem("logros_desbloqueados")
+      if (logrosGuardados) {
+        logros_desbloqueados = JSON.parse(logrosGuardados)
+        // Actualizar estado de medallas
+        logros_desbloqueados.forEach(function(logro) {
+          if (medallas[logro]) {
+            medallas[logro].desbloqueado = true
+          }
+        })
+      }
+    })
+  </script>
+<!-- Fin del script -->
+</body>
+</html>
